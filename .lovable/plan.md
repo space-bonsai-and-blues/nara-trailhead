@@ -20,7 +20,7 @@ Weighting -> Dealbreaker gate
 4. The two action buttons appear only after at least one pick.
    - "Take a new round of evaluation": save picks, merge any not-yet-relevant picked IDs onto the end of the relevant list (never remove or reorder existing ones), then go to Rating. Newly merged categories show up as untouched/unweighted; every prior marker value and weight stays exactly as it was.
    - "Ready for final summary": save picks, go to Report. No merge.
-5. "No, I'm clear." overwrites the saved picks to empty and goes straight to the Report.
+5. "No, I'm clear." leaves any previously saved dealbreakers unchanged and goes straight to the Report — it is the "nothing new to add" path, not a retraction.
 6. Re-entry (Back from the Report, or arriving again after a new round) always resets the gate to unanswered. If "Actually, yes" is tapped again, previously saved picks show pre-checked.
 
 ## Technical notes
