@@ -134,3 +134,39 @@ export const wellbeingCategories = categories.filter((c) => c.type === "wellbein
 export function getCategoryById(id: string): Category | undefined {
   return categories.find((c) => c.id === id);
 }
+
+/**
+ * Maps the classifier's exact category names (copied verbatim from the
+ * extract-concerns taxonomy) onto the registry IDs used across the app.
+ */
+export const categoryNameToId: Record<string, string> = {
+  // Constraint (11)
+  Time: "time",
+  Money: "money",
+  Effort: "effort",
+  Quality: "quality",
+  Reliability: "reliability",
+  "Risk & Uncertainty": "risk",
+  Accessibility: "accessibility",
+  Availability: "availability",
+  Logistics: "logistics",
+  Requirements: "requirements",
+  Convenience: "convenience",
+  // Wellbeing (7)
+  "Enjoyment & Satisfaction": "enjoyment",
+  "True Passion": "passion",
+  "Social & Relational": "social",
+  "Values, Identity & Ethics": "values",
+  Accomplishment: "accomplishment",
+  Health: "health",
+  "Financial Stability": "financial",
+};
+
+/** Translate classifier names into known constraint categories, ignoring unknowns. */
+export function constraintsFromNames(names: string[]): Category[] {
+  const ids = new Set(
+    names.map((name) => categoryNameToId[name]).filter((id): id is string => Boolean(id)),
+  );
+  return constraintCategories.filter((c) => ids.has(c.id));
+}
+

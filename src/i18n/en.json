@@ -25,7 +25,11 @@
   "confirm.meta.title": "Confirm your categories — Decidely",
   "confirm.meta.description": "Review the categories that apply to your decision before scoring.",
   "confirm.detectedTitle": "Relevant constraints",
-  "confirm.detectedHint": "These are auto-detected for now — you can refine them later.",
+  "confirm.detectedHint": "These are auto-detected from what you described.",
+  "confirm.detectedLoading": "Reading your description…",
+  "confirm.detectedFallback": "Auto-detection didn't complete, so every constraint is shown here.",
+  "confirm.detectedNone": "No specific constraints came through in your description. The wellbeing questions below still apply.",
+
   "confirm.wellbeingTitle": "Wellbeing check",
   "confirm.wellbeingHint": "Tap each row to acknowledge it.",
 
