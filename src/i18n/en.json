@@ -18,6 +18,10 @@
   "input.optionAPlaceholder": "e.g. Take the remote job",
   "input.optionBLabel": "Option B",
   "input.optionBPlaceholder": "e.g. Stay in current role",
+  "input.hintDecision": "Add your decision description to continue.",
+  "input.hintOptions": "Name both options to continue.",
+  "input.hintAll": "Fill in all three fields to continue.",
+  "input.required": "Required",
 
   "confirm.title": "Confirm categories",
   "confirm.description": "Check the categories that matter for this decision, then acknowledge each wellbeing prompt.",
