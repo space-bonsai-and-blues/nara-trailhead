@@ -1,3 +1,6 @@
+// Deterministic scoring: raw rating (-5..+5) × weight (0..5) per category,
+// summed into each option's total and into constraint / wellbeing subtotals.
+// No normalization, no AI call. See the standalone scoring spec for the equivalent shape.
 import { categories, type Category, type CategoryType } from "@/lib/categories";
 import { getRating, type CategoryRating, type OptionKey } from "@/lib/flow-store";
 
