@@ -14,9 +14,10 @@ A React context provider mounted in the root layout holds everything the flow ne
 
 The provider lives above the router outlet, so navigating between steps (including a
 Dealbreaker → Rating round-trip) never resets values. Input and Confirm move their local
-state into the store. For now `relevantCategories` is seeded with all 18 categories from the
-registry; Confirm's 5-chip stub stays a display-only preview until real classification lands,
-and swapping the seed for the classifier result later is a one-line change.
+state into the store. `relevantCategories` starts empty and is written by the Confirm screen
+on Continue: the 5 stubbed constraint IDs it displays as chips plus all 7 wellbeing IDs (12
+today). Confirm's chips are therefore the actual source of what Rating and Weighting page
+through, and swapping the stub for real classification later changes only that list.
 
 ## Rating screen (/rating)
 
