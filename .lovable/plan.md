@@ -60,7 +60,7 @@ Missing rating data never crashes this screen — it renders independently of Ra
 - New `src/components/NumberScale.tsx` — the 0-5 tap row.
 - Both routes manage a local `categoryIndex` for paging and render inside `StepScreen`,
   which gains optional `onNext` / `onBack` handlers and sub-step progress so the header
-  counter can read "Category 3 of 18".
+  counter reads "Category X of {relevantCategories.length}" — never a hardcoded total.
 - All new copy goes into `src/i18n/en.json` and is read through `t()`; no literal strings in
   JSX. Colors use existing semantic tokens only, including active/selected states.
 - Input and Confirm are updated to read and write the store instead of local `useState`.
