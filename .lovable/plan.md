@@ -37,5 +37,6 @@ Financial Stability        Would this leave you feeling steady, or on edge, fina
 - All new copy — labels, placeholders, prompts, counter text, disabled hints — goes into `src/i18n/en.json` and is read via `t()`. No literal strings in JSX.
 - `StepScreen` gains an optional `children` slot (replacing the dashed placeholder box) and optional props to control the Continue button's disabled state, so both screens keep the shared header/progress/footer.
 - Screen state is local `useState` for now; wiring it to shared decision state comes with the later steps.
-- Constraint categories and wellbeing categories each live in a small config module (`src/lib/categories.ts`) holding IDs + string keys, so the stubbed constraint set is swapped for real classification output with one change.
+- `src/lib/categories.ts` defines the complete source of truth for all 18 categories: 11 constraint categories and 7 wellbeing categories. Each entry carries an ID, type (`constraint` | `wellbeing`), and string-key references for title and description.
+- The Confirm screen's stubbed "relevant categories" are just a hardcoded array of 5 constraint IDs (`Time`, `Money`, `Effort`, `Quality`, `Risk & Uncertainty`) selected from that full set. Later screens (Rating, Weighting, Dealbreakers, Report) will read variable subsets from the same module without adding new category definitions.
 - Styling stays mobile-first with semantic tokens only; rows use card/border/muted tokens and a `min-h-12` tap target.
