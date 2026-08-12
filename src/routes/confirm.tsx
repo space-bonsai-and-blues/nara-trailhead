@@ -68,11 +68,16 @@ function ConfirmScreen() {
         <section className="space-y-3">
           <div className="flex items-end justify-between gap-4">
             <div className="space-y-1">
-              <h2 className="text-sm font-semibold tracking-tight">{t("confirm.wellbeingTitle")}</h2>
+              <h2 className="text-sm font-semibold tracking-tight">
+                {t("confirm.wellbeingTitle")}
+              </h2>
               <p className="text-xs text-muted-foreground">{t("confirm.wellbeingHint")}</p>
             </div>
             <p className="text-xs text-muted-foreground">
-              {t("common.acknowledged", { current: acknowledged.size, total: wellbeingCategories.length })}
+              {t("common.acknowledged", {
+                current: acknowledged.size,
+                total: wellbeingCategories.length,
+              })}
             </p>
           </div>
 
