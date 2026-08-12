@@ -1,0 +1,43 @@
+{
+  "app.name": "Decidely",
+  "common.continue": "Continue",
+  "common.back": "Back",
+  "common.startOver": "Start over",
+  "common.stepProgress": "Step {current} of {total}",
+
+  "input.title": "Your options",
+  "input.description": "List the choices you're weighing up. You can add details later.",
+  "input.placeholder": "Placeholder — input screen",
+  "input.meta.title": "Add your options — Decidely",
+  "input.meta.description": "Start by listing the options you want to compare.",
+
+  "confirm.title": "Confirm options",
+  "confirm.description": "Check everything looks right before you score it.",
+  "confirm.placeholder": "Placeholder — confirm screen",
+  "confirm.meta.title": "Confirm your options — Decidely",
+  "confirm.meta.description": "Review the options you entered before scoring.",
+
+  "rating.title": "Rate each option",
+  "rating.description": "Score how well each option performs on what matters.",
+  "rating.placeholder": "Placeholder — rating screen",
+  "rating.meta.title": "Rate your options — Decidely",
+  "rating.meta.description": "Score each option against your criteria.",
+
+  "weighting.title": "Set the weights",
+  "weighting.description": "Decide how much each criterion counts towards the result.",
+  "weighting.placeholder": "Placeholder — weighting screen",
+  "weighting.meta.title": "Weight your criteria — Decidely",
+  "weighting.meta.description": "Choose how much each criterion matters.",
+
+  "dealbreakers.title": "Dealbreaker check",
+  "dealbreakers.description": "Flag anything that rules an option out completely.",
+  "dealbreakers.placeholder": "Placeholder — dealbreaker screen",
+  "dealbreakers.meta.title": "Dealbreaker check — Decidely",
+  "dealbreakers.meta.description": "Mark the conditions that disqualify an option.",
+
+  "report.title": "Your report",
+  "report.description": "Here's how your options stack up.",
+  "report.placeholder": "Placeholder — report screen",
+  "report.meta.title": "Your decision report — Decidely",
+  "report.meta.description": "See the ranked result of your decision."
+}

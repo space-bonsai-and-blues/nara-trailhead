@@ -10,33 +10,91 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ConfirmRouteImport } from './routes/confirm'
+import { Route as DealbreakersRouteImport } from './routes/dealbreakers'
+import { Route as RatingRouteImport } from './routes/rating'
+import { Route as ReportRouteImport } from './routes/report'
+import { Route as WeightingRouteImport } from './routes/weighting'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ConfirmRoute = ConfirmRouteImport.update({
+  id: '/confirm',
+  path: '/confirm',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DealbreakersRoute = DealbreakersRouteImport.update({
+  id: '/dealbreakers',
+  path: '/dealbreakers',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const RatingRoute = RatingRouteImport.update({
+  id: '/rating',
+  path: '/rating',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ReportRoute = ReportRouteImport.update({
+  id: '/report',
+  path: '/report',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WeightingRoute = WeightingRouteImport.update({
+  id: '/weighting',
+  path: '/weighting',
+  getParentRoute: () => rootRouteImport,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/confirm': typeof ConfirmRoute
+  '/dealbreakers': typeof DealbreakersRoute
+  '/rating': typeof RatingRoute
+  '/report': typeof ReportRoute
+  '/weighting': typeof WeightingRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/confirm': typeof ConfirmRoute
+  '/dealbreakers': typeof DealbreakersRoute
+  '/rating': typeof RatingRoute
+  '/report': typeof ReportRoute
+  '/weighting': typeof WeightingRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/confirm': typeof ConfirmRoute
+  '/dealbreakers': typeof DealbreakersRoute
+  '/rating': typeof RatingRoute
+  '/report': typeof ReportRoute
+  '/weighting': typeof WeightingRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/'
+  fullPaths:
+    '/' | '/confirm' | '/dealbreakers' | '/rating' | '/report' | '/weighting'
   fileRoutesByTo: FileRoutesByTo
-  to: '/'
-  id: '__root__' | '/'
+  to: '/' | '/confirm' | '/dealbreakers' | '/rating' | '/report' | '/weighting'
+  id:
+    | '__root__'
+    | '/'
+    | '/confirm'
+    | '/dealbreakers'
+    | '/rating'
+    | '/report'
+    | '/weighting'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  ConfirmRoute: typeof ConfirmRoute
+  DealbreakersRoute: typeof DealbreakersRoute
+  RatingRoute: typeof RatingRoute
+  ReportRoute: typeof ReportRoute
+  WeightingRoute: typeof WeightingRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -48,22 +106,52 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/confirm': {
+      id: '/confirm'
+      path: '/confirm'
+      fullPath: '/confirm'
+      preLoaderRoute: typeof ConfirmRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/dealbreakers': {
+      id: '/dealbreakers'
+      path: '/dealbreakers'
+      fullPath: '/dealbreakers'
+      preLoaderRoute: typeof DealbreakersRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/rating': {
+      id: '/rating'
+      path: '/rating'
+      fullPath: '/rating'
+      preLoaderRoute: typeof RatingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/report': {
+      id: '/report'
+      path: '/report'
+      fullPath: '/report'
+      preLoaderRoute: typeof ReportRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/weighting': {
+      id: '/weighting'
+      path: '/weighting'
+      fullPath: '/weighting'
+      preLoaderRoute: typeof WeightingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
   }
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  ConfirmRoute: ConfirmRoute,
+  DealbreakersRoute: DealbreakersRoute,
+  RatingRoute: RatingRoute,
+  ReportRoute: ReportRoute,
+  WeightingRoute: WeightingRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
-
-import type { getRouter } from './router.tsx'
-import type { startInstance } from './start.ts'
-declare module '@tanstack/react-start' {
-  interface Register {
-    ssr: true
-    router: Awaited<ReturnType<typeof getRouter>>
-    config: Awaited<ReturnType<typeof startInstance.getOptions>>
-  }
-}
