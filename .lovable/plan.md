@@ -6,7 +6,7 @@ A deliberate pause between Weighting and the Report: ask whether anything outwei
 
 ```text
 Weighting -> Dealbreaker gate
-   "No, I'm clear."   -> clear dealbreakers -> Report
+   "No, I'm clear."   -> leave dealbreakers as-is -> Report
    "Actually, yes"    -> picker (all 18, grouped, multi-select)
                           -> "Take a new round of evaluation" -> merge picks into relevant list -> Rating
                           -> "Ready for final summary"        -> Report
