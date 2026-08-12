@@ -34,6 +34,7 @@ export function StepScreen({
   onBack,
   continueLabel,
   onBeforeContinue,
+  hideFooter,
 }: StepScreenProps) {
   const { t } = useTranslation();
   const { index, step, previous, next, total } = getStep(path);
