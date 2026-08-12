@@ -44,7 +44,7 @@ const initialState: FlowState = {
   relevantCategories: [],
   ratings: {},
   weights: {},
-  dealbreakers: {},
+  dealbreakers: [],
 };
 
 const FlowContext = createContext<FlowContextValue | undefined>(undefined);
