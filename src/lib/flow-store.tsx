@@ -88,10 +88,14 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     [],
   );
   const setDealbreakers = useCallback(
-    (categoryId: string, options: OptionKey[]) =>
+    (ids: string[]) => setState((prev) => ({ ...prev, dealbreakers: ids })),
+    [],
+  );
+  const mergeRelevantCategories = useCallback(
+    (ids: string[]) =>
       setState((prev) => ({
         ...prev,
-        dealbreakers: { ...prev.dealbreakers, [categoryId]: options },
+        relevantCategories: [...prev.relevantCategories, ...ids.filter((id) => !prev.relevantCategories.includes(id))],
       })),
     [],
   );
