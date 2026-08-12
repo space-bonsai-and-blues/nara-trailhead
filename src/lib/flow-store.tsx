@@ -16,7 +16,8 @@ export type FlowState = {
   relevantCategories: string[];
   ratings: Record<string, CategoryRating>;
   weights: Record<string, number>;
-  dealbreakers: Record<string, OptionKey[]>;
+  /** Category IDs flagged as dealbreakers / outweighing the score. */
+  dealbreakers: string[];
 };
 
 export const emptyMarker: MarkerState = { value: 0, touched: false };
@@ -30,7 +31,9 @@ export type FlowContextValue = FlowState & {
   setRelevantCategories: (ids: string[]) => void;
   setRating: (categoryId: string, option: OptionKey, marker: MarkerState) => void;
   setWeight: (categoryId: string, weight: number) => void;
-  setDealbreakers: (categoryId: string, options: OptionKey[]) => void;
+  setDealbreakers: (ids: string[]) => void;
+  /** Append IDs that are not already in the relevant list. */
+  mergeRelevantCategories: (ids: string[]) => void;
   reset: () => void;
 };
 
@@ -41,7 +44,7 @@ const initialState: FlowState = {
   relevantCategories: [],
   ratings: {},
   weights: {},
-  dealbreakers: {},
+  dealbreakers: [],
 };
 
 const FlowContext = createContext<FlowContextValue | undefined>(undefined);
@@ -85,10 +88,17 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     [],
   );
   const setDealbreakers = useCallback(
-    (categoryId: string, options: OptionKey[]) =>
+    (ids: string[]) => setState((prev) => ({ ...prev, dealbreakers: ids })),
+    [],
+  );
+  const mergeRelevantCategories = useCallback(
+    (ids: string[]) =>
       setState((prev) => ({
         ...prev,
-        dealbreakers: { ...prev.dealbreakers, [categoryId]: options },
+        relevantCategories: [
+          ...prev.relevantCategories,
+          ...ids.filter((id) => !prev.relevantCategories.includes(id)),
+        ],
       })),
     [],
   );
@@ -104,6 +114,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       setRating,
       setWeight,
       setDealbreakers,
+      mergeRelevantCategories,
       reset,
     }),
     [
@@ -115,6 +126,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       setRating,
       setWeight,
       setDealbreakers,
+      mergeRelevantCategories,
       reset,
     ],
   );

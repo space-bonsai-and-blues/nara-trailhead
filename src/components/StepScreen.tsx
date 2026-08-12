@@ -20,6 +20,8 @@ export type StepScreenProps = {
   continueLabel?: string | undefined;
   /** Called before navigating to the next step (Link mode). */
   onBeforeContinue?: (() => void) | undefined;
+  /** Hide the default footer so the route can render its own controls. */
+  hideFooter?: boolean | undefined;
 };
 
 export function StepScreen({
@@ -32,6 +34,7 @@ export function StepScreen({
   onBack,
   continueLabel,
   onBeforeContinue,
+  hideFooter,
 }: StepScreenProps) {
   const { t } = useTranslation();
   const { index, step, previous, next, total } = getStep(path);
@@ -85,49 +88,51 @@ export function StepScreen({
         )}
       </main>
 
-      <footer className="sticky bottom-0 mx-auto w-full max-w-md bg-background px-5 pb-8 pt-6">
-        {footerHint ? (
-          <p className="mb-3 text-center text-xs text-muted-foreground">{footerHint}</p>
-        ) : null}
-        <div className="flex items-center gap-3">
-          {onBack ? (
-            <button type="button" onClick={onBack} className={secondaryClass}>
-              {t("common.back")}
-            </button>
-          ) : previous ? (
-            <Link to={previous.path} className={secondaryClass}>
-              {t("common.back")}
-            </Link>
+      {!hideFooter ? (
+        <footer className="sticky bottom-0 mx-auto w-full max-w-md bg-background px-5 pb-8 pt-6">
+          {footerHint ? (
+            <p className="mb-3 text-center text-xs text-muted-foreground">{footerHint}</p>
           ) : null}
+          <div className="flex items-center gap-3">
+            {onBack ? (
+              <button type="button" onClick={onBack} className={secondaryClass}>
+                {t("common.back")}
+              </button>
+            ) : previous ? (
+              <Link to={previous.path} className={secondaryClass}>
+                {t("common.back")}
+              </Link>
+            ) : null}
 
-          {onContinue ? (
-            <button
-              type="button"
-              onClick={onContinue}
-              disabled={continueDisabled}
-              className={primaryClass}
-            >
-              {continueLabel ?? t("common.continue")}
-            </button>
-          ) : next ? (
-            <Link
-              to={next.path}
-              aria-disabled={continueDisabled}
-              onClick={onBeforeContinue}
-              className={primaryClass}
-            >
-              {continueLabel ?? t("common.continue")}
-            </Link>
-          ) : (
-            <Link
-              to="/"
-              className="inline-flex h-12 flex-[2] items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
-            >
-              {t("common.startOver")}
-            </Link>
-          )}
-        </div>
-      </footer>
+            {onContinue ? (
+              <button
+                type="button"
+                onClick={onContinue}
+                disabled={continueDisabled}
+                className={primaryClass}
+              >
+                {continueLabel ?? t("common.continue")}
+              </button>
+            ) : next ? (
+              <Link
+                to={next.path}
+                aria-disabled={continueDisabled}
+                onClick={onBeforeContinue}
+                className={primaryClass}
+              >
+                {continueLabel ?? t("common.continue")}
+              </Link>
+            ) : (
+              <Link
+                to="/"
+                className="inline-flex h-12 flex-[2] items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+              >
+                {t("common.startOver")}
+              </Link>
+            )}
+          </div>
+        </footer>
+      ) : null}
     </div>
   );
 }
