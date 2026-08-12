@@ -137,7 +137,7 @@ export function RatingSlider({ markers, labels, onChange }: RatingSliderProps) {
           })}
         </div>
 
-        <div className="mt-6 flex justify-between text-xs text-muted-foreground">
+        <div className="mt-14 flex justify-between text-xs text-muted-foreground">
           <span>{t("rating.scaleMin")}</span>
           <span>{t("rating.scaleMid")}</span>
           <span>{t("rating.scaleMax")}</span>
