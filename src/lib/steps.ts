@@ -56,9 +56,10 @@ export const steps: Step[] = [
 
 export function getStep(path: StepPath) {
   const index = steps.findIndex((s) => s.path === path);
+  const step = steps[index]!;
   return {
     index,
-    step: steps[index],
+    step,
     previous: index > 0 ? steps[index - 1] : undefined,
     next: index < steps.length - 1 ? steps[index + 1] : undefined,
     total: steps.length,
