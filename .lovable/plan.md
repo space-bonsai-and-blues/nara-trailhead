@@ -17,7 +17,8 @@ Note: `src/lib/scoring.ts` does not exist in the project yet (the message referr
 ## Technical notes
 
 - New `src/lib/scoring.ts` exporting `computeScore(ratings, weights, relevantCategories)` returning, per option, `total`, `constraintSubtotal`, `wellbeingSubtotal`, and a per-category array of `{ id, rating, weight, contribution, rated }`. Pure function, no backend.
-- `src/routes/report.tsx` renders inside `StepScreen` with `hideFooter` (or a Back-only footer, since Report is the last step) and consumes `useFlow()`.
+- `src/routes/report.tsx` renders inside `StepScreen` and consumes `useFlow()`. It keeps the shared shell's existing footer (the "Start over" state shown on the last step) — no `hideFooter`, no custom footer.
+- "Start over" clears the flow store before navigating to `/`. The store already has a `reset()` action that restores the initial state (decision, options, relevantCategories, ratings, weights, dealbreakers); it will be exposed as `resetFlow()` for clarity, and `StepScreen` gains an optional handler on the "Start over" control so Report can call it on tap.
 - Toggle state is local `useState`; the collapsed content is not rendered until opened.
 - All new copy added to `src/i18n/en.json` under `report.*` keys, including the two long-form group labels, their short forms, the "Not rated" placeholder, the toggle label, and the dealbreaker callout heading. No literal strings in JSX.
 - Mobile-first, existing design tokens only.
