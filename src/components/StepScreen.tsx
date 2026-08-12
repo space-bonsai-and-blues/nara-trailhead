@@ -20,6 +20,8 @@ export type StepScreenProps = {
   continueLabel?: string | undefined;
   /** Called before navigating to the next step (Link mode). */
   onBeforeContinue?: (() => void) | undefined;
+  /** Hide the default footer so the route can render its own controls. */
+  hideFooter?: boolean | undefined;
 };
 
 export function StepScreen({
