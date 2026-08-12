@@ -182,7 +182,6 @@ function CategoryPicker({
   );
 }
 
-import type { Category } from "@/lib/categories";
 
 function CategoryGroup({
   title,
