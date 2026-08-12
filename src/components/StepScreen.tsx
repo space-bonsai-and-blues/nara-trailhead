@@ -22,6 +22,8 @@ export type StepScreenProps = {
   onBeforeContinue?: (() => void) | undefined;
   /** Hide the default footer so the route can render its own controls. */
   hideFooter?: boolean | undefined;
+  /** Called when the final step's "Start over" control is tapped. */
+  onStartOver?: (() => void) | undefined;
 };
 
 export function StepScreen({
