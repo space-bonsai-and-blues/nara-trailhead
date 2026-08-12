@@ -111,6 +111,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       setRating,
       setWeight,
       setDealbreakers,
+      mergeRelevantCategories,
       reset,
     }),
     [
@@ -122,6 +123,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       setRating,
       setWeight,
       setDealbreakers,
+      mergeRelevantCategories,
       reset,
     ],
   );
