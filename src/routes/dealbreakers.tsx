@@ -181,6 +181,8 @@ function CategoryPicker({
   );
 }
 
+import type { Category } from "@/lib/categories";
+
 function CategoryGroup({
   title,
   categories,
@@ -189,7 +191,7 @@ function CategoryGroup({
   onToggle,
 }: {
   title: string;
-  categories: { id: string; titleId: string; descriptionId: string }[];
+  categories: Category[];
   selected: Set<string>;
   relevantSet: Set<string>;
   onToggle: (id: string) => void;
