@@ -1,12 +1,6 @@
 import type { StringId } from "@/i18n";
 
-export type StepPath =
-  | "/"
-  | "/confirm"
-  | "/rating"
-  | "/weighting"
-  | "/dealbreakers"
-  | "/report";
+export type StepPath = "/" | "/confirm" | "/rating" | "/weighting" | "/dealbreakers" | "/report";
 
 export type Step = {
   path: StepPath;

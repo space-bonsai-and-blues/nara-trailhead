@@ -1,8 +1,15 @@
 import { Link } from "@tanstack/react-router";
 import { useTranslation } from "@/i18n";
 import { getStep, type StepPath } from "@/lib/steps";
+import { cn } from "@/lib/utils";
 
-export function StepScreen({ path }: { path: StepPath }) {
+export type StepScreenProps = {
+  path: StepPath;
+  children?: React.ReactNode;
+  continueDisabled?: boolean;
+};
+
+export function StepScreen({ path, children, continueDisabled = false }: StepScreenProps) {
   const { t } = useTranslation();
   const { index, step, previous, next, total } = getStep(path);
   const progress = ((index + 1) / total) * 100;
@@ -34,9 +41,13 @@ export function StepScreen({ path }: { path: StepPath }) {
           {t(step.descriptionId)}
         </p>
 
-        <div className="mt-8 rounded-xl border border-dashed border-border bg-card px-5 py-12 text-center text-sm text-muted-foreground">
-          {t(step.placeholderId)}
-        </div>
+        {children ? (
+          <div className="mt-8">{children}</div>
+        ) : (
+          <div className="mt-8 rounded-xl border border-dashed border-border bg-card px-5 py-12 text-center text-sm text-muted-foreground">
+            {t(step.placeholderId)}
+          </div>
+        )}
       </main>
 
       <footer className="sticky bottom-0 mx-auto w-full max-w-md bg-background px-5 pb-8 pt-6">
@@ -52,7 +63,13 @@ export function StepScreen({ path }: { path: StepPath }) {
           {next ? (
             <Link
               to={next.path}
-              className="inline-flex h-12 flex-[2] items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
+              aria-disabled={continueDisabled}
+              className={cn(
+                "inline-flex h-12 flex-[2] items-center justify-center rounded-full text-sm font-medium transition-opacity",
+                continueDisabled
+                  ? "pointer-events-none bg-muted text-muted-foreground opacity-60"
+                  : "bg-primary text-primary-foreground hover:opacity-90",
+              )}
             >
               {t("common.continue")}
             </Link>
