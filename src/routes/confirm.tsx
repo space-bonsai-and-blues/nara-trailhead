@@ -1,14 +1,14 @@
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { Check } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { Check, Loader2 } from "lucide-react";
 import { useMemo, useState } from "react";
 import { StepScreen } from "@/components/StepScreen";
 import { t } from "@/i18n";
-import { getCategoryById, wellbeingCategories } from "@/lib/categories";
+import { constraintsFromNames, wellbeingCategories } from "@/lib/categories";
+import { extractConcerns } from "@/lib/extract-concerns.functions";
 import { useFlow } from "@/lib/flow-store";
 import { cn } from "@/lib/utils";
-
-// Stubbed relevant constraint IDs until real classification is wired in.
-const stubbedRelevantConstraintIds = ["time", "money", "effort", "quality", "risk"];
 
 export const Route = createFileRoute("/confirm")({
   head: () => ({
@@ -23,12 +23,20 @@ export const Route = createFileRoute("/confirm")({
 });
 
 function ConfirmScreen() {
-  const { setRelevantCategories } = useFlow();
+  const { decision, setRelevantCategories } = useFlow();
   const [acknowledged, setAcknowledged] = useState<Set<string>>(new Set());
 
+  const classify = useServerFn(extractConcerns);
+  const { data, isPending } = useQuery({
+    queryKey: ["extract-concerns", decision],
+    queryFn: () => classify({ data: { userMessage: decision } }),
+    staleTime: Infinity,
+    retry: false,
+  });
+
   const relevantConstraints = useMemo(
-    () => stubbedRelevantConstraintIds.map(getCategoryById).filter(Boolean),
-    [],
+    () => constraintsFromNames(data?.categories ?? []),
+    [data?.categories],
   );
 
   const toggleAcknowledged = (id: string) => {
@@ -51,7 +59,7 @@ function ConfirmScreen() {
       continueDisabled={!allAcknowledged}
       onBeforeContinue={() =>
         setRelevantCategories([
-          ...relevantConstraints.filter(Boolean).map((category) => category!.id),
+          ...relevantConstraints.map((category) => category.id),
           ...wellbeingCategories.map((category) => category.id),
         ])
       }
@@ -60,21 +68,39 @@ function ConfirmScreen() {
         <section className="space-y-3">
           <div className="space-y-1">
             <h2 className="text-sm font-semibold tracking-tight">{t("confirm.detectedTitle")}</h2>
-            <p className="text-xs text-muted-foreground">{t("confirm.detectedHint")}</p>
+            <p className="text-xs text-muted-foreground">
+              {isPending
+                ? t("confirm.detectedLoading")
+                : data?.source === "fallback"
+                  ? t("confirm.detectedFallback")
+                  : t("confirm.detectedHint")}
+            </p>
           </div>
-          <div className="flex flex-wrap gap-2">
-            {relevantConstraints.map((category) =>
-              category ? (
+          {isPending ? (
+            <div
+              className="flex items-center gap-2 text-sm text-muted-foreground"
+              aria-live="polite"
+            >
+              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
+            </div>
+          ) : relevantConstraints.length === 0 ? (
+            <p className="rounded-xl border border-dashed border-border p-4 text-sm text-muted-foreground">
+              {t("confirm.detectedNone")}
+            </p>
+          ) : (
+            <div className="flex flex-wrap gap-2">
+              {relevantConstraints.map((category) => (
                 <span
                   key={category.id}
                   className="inline-flex items-center rounded-full border border-border bg-card px-3 py-1 text-sm text-card-foreground"
                 >
                   {t(category.titleId)}
                 </span>
-              ) : null,
-            )}
-          </div>
+              ))}
+            </div>
+          )}
         </section>
+
 
         <section className="space-y-3">
           <div className="flex items-end justify-between gap-4">
