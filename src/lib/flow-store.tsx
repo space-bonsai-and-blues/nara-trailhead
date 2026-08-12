@@ -95,7 +95,10 @@ export function FlowProvider({ children }: { children: ReactNode }) {
     (ids: string[]) =>
       setState((prev) => ({
         ...prev,
-        relevantCategories: [...prev.relevantCategories, ...ids.filter((id) => !prev.relevantCategories.includes(id))],
+        relevantCategories: [
+          ...prev.relevantCategories,
+          ...ids.filter((id) => !prev.relevantCategories.includes(id)),
+        ],
       })),
     [],
   );

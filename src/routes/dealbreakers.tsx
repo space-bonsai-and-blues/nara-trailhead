@@ -25,12 +25,7 @@ type GateAnswer = null | "yes" | "no";
 function DealbreakersScreen() {
   const { t: translate } = useTranslation();
   const navigate = useNavigate();
-  const {
-    relevantCategories,
-    dealbreakers,
-    setDealbreakers,
-    mergeRelevantCategories,
-  } = useFlow();
+  const { relevantCategories, dealbreakers, setDealbreakers, mergeRelevantCategories } = useFlow();
 
   const [answer, setAnswer] = useState<GateAnswer>(null);
   const [selected, setSelected] = useState<Set<string>>(new Set());
@@ -40,10 +35,7 @@ function DealbreakersScreen() {
     setSelected(new Set(dealbreakers));
   }, [dealbreakers]);
 
-  const relevantSet = useMemo(
-    () => new Set(relevantCategories),
-    [relevantCategories],
-  );
+  const relevantSet = useMemo(() => new Set(relevantCategories), [relevantCategories]);
 
   const hasSelection = selected.size > 0;
 
@@ -84,20 +76,12 @@ function DealbreakersScreen() {
   };
 
   return (
-    <StepScreen
-      path="/dealbreakers"
-      hideFooter
-      onBack={handleBack}
-    >
+    <StepScreen path="/dealbreakers" hideFooter onBack={handleBack}>
       <div className="space-y-8 pb-8">
         {answer === null ? (
           <GatePrompt onYes={handleYes} onNo={handleNo} />
         ) : (
-          <CategoryPicker
-            selected={selected}
-            relevantSet={relevantSet}
-            onToggle={toggleSelected}
-          />
+          <CategoryPicker selected={selected} relevantSet={relevantSet} onToggle={toggleSelected} />
         )}
 
         {answer === "yes" && hasSelection ? (
@@ -181,7 +165,6 @@ function CategoryPicker({
     </div>
   );
 }
-
 
 function CategoryGroup({
   title,
