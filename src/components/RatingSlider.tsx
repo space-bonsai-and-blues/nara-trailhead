@@ -88,7 +88,7 @@ export function RatingSlider({ markers, labels, onChange }: RatingSliderProps) {
     <div className="space-y-6">
       <p className="text-xs text-muted-foreground">{t("rating.markerHint")}</p>
 
-      <div className="px-2 pb-2 pt-10">
+      <div className="px-2 pb-6 pt-12">
         <div ref={trackRef} className="relative h-1.5 w-full rounded-full bg-muted">
           <span
             className="absolute left-1/2 top-1/2 h-4 w-px -translate-y-1/2 bg-border"
@@ -128,7 +128,7 @@ export function RatingSlider({ markers, labels, onChange }: RatingSliderProps) {
                 )}
                 style={{
                   left: `${percentFor(marker.value)}%`,
-                  marginTop: optionIndex === 0 ? "-0.5rem" : "0.5rem",
+                  marginTop: optionIndex === 0 ? "-1.5rem" : "1.5rem",
                 }}
               >
                 {marker.touched ? marker.value : "?"}
