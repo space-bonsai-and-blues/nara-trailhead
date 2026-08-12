@@ -117,6 +117,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       setWeight,
       setDealbreakers,
       mergeRelevantCategories,
+      resetFlow: reset,
       reset,
     }),
     [
