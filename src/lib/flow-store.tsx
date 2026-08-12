@@ -34,6 +34,8 @@ export type FlowContextValue = FlowState & {
   setDealbreakers: (ids: string[]) => void;
   /** Append IDs that are not already in the relevant list. */
   mergeRelevantCategories: (ids: string[]) => void;
+  /** Clear every answer and return the flow to its initial state. */
+  resetFlow: () => void;
   reset: () => void;
 };
 
@@ -115,6 +117,7 @@ export function FlowProvider({ children }: { children: ReactNode }) {
       setWeight,
       setDealbreakers,
       mergeRelevantCategories,
+      resetFlow: reset,
       reset,
     }),
     [

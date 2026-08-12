@@ -22,6 +22,8 @@ export type StepScreenProps = {
   onBeforeContinue?: (() => void) | undefined;
   /** Hide the default footer so the route can render its own controls. */
   hideFooter?: boolean | undefined;
+  /** Called when the final step's "Start over" control is tapped. */
+  onStartOver?: (() => void) | undefined;
 };
 
 export function StepScreen({
@@ -35,6 +37,7 @@ export function StepScreen({
   continueLabel,
   onBeforeContinue,
   hideFooter,
+  onStartOver,
 }: StepScreenProps) {
   const { t } = useTranslation();
   const { index, step, previous, next, total } = getStep(path);
@@ -125,6 +128,7 @@ export function StepScreen({
             ) : (
               <Link
                 to="/"
+                onClick={onStartOver}
                 className="inline-flex h-12 flex-[2] items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
               >
                 {t("common.startOver")}
