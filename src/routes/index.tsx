@@ -21,10 +21,24 @@ export const Route = createFileRoute("/")({
 function InputScreen() {
   const { decision, optionA, optionB, setDecision, setOptionA, setOptionB } = useFlow();
 
-  const canContinue = Boolean(decision.trim() && optionA.trim() && optionB.trim());
+  const missingDecision = !decision.trim();
+  const missingOptionA = !optionA.trim();
+  const missingOptionB = !optionB.trim();
+  const missingOptions = missingOptionA || missingOptionB;
+  const canContinue = !missingDecision && !missingOptions;
+
+  const footerHint = canContinue
+    ? undefined
+    : missingDecision && missingOptions
+      ? t("input.hintAll")
+      : missingDecision
+        ? t("input.hintDecision")
+        : t("input.hintOptions");
+
+  const requiredNote = <span className="mt-1 block text-xs text-muted-foreground">{t("input.required")}</span>;
 
   return (
-    <StepScreen path="/" continueDisabled={!canContinue}>
+    <StepScreen path="/" continueDisabled={!canContinue} footerHint={footerHint}>
       <div className="space-y-6">
         <div className="space-y-2">
           <Label htmlFor="decision">{t("input.decisionLabel")}</Label>
@@ -35,6 +49,7 @@ function InputScreen() {
             placeholder={t("input.decisionPlaceholder")}
             className="min-h-[120px] resize-none"
           />
+          {missingDecision ? requiredNote : null}
         </div>
 
         <div className="space-y-2">
@@ -45,6 +60,7 @@ function InputScreen() {
             onChange={(e) => setOptionA(e.target.value)}
             placeholder={t("input.optionAPlaceholder")}
           />
+          {missingOptionA ? requiredNote : null}
         </div>
 
         <div className="space-y-2">
@@ -55,8 +71,10 @@ function InputScreen() {
             onChange={(e) => setOptionB(e.target.value)}
             placeholder={t("input.optionBPlaceholder")}
           />
+          {missingOptionB ? requiredNote : null}
         </div>
       </div>
+
     </StepScreen>
   );
 }
