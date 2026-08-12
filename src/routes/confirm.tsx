@@ -3,7 +3,8 @@ import { Check } from "lucide-react";
 import { useMemo, useState } from "react";
 import { StepScreen } from "@/components/StepScreen";
 import { t } from "@/i18n";
-import { categories, getCategoryById, wellbeingCategories } from "@/lib/categories";
+import { getCategoryById, wellbeingCategories } from "@/lib/categories";
+import { useFlow } from "@/lib/flow-store";
 import { cn } from "@/lib/utils";
 
 // Stubbed relevant constraint IDs until real classification is wired in.
@@ -22,6 +23,7 @@ export const Route = createFileRoute("/confirm")({
 });
 
 function ConfirmScreen() {
+  const { setRelevantCategories } = useFlow();
   const [acknowledged, setAcknowledged] = useState<Set<string>>(new Set());
 
   const relevantConstraints = useMemo(
@@ -44,7 +46,16 @@ function ConfirmScreen() {
   const allAcknowledged = acknowledged.size === wellbeingCategories.length;
 
   return (
-    <StepScreen path="/confirm" continueDisabled={!allAcknowledged}>
+    <StepScreen
+      path="/confirm"
+      continueDisabled={!allAcknowledged}
+      onBeforeContinue={() =>
+        setRelevantCategories([
+          ...relevantConstraints.filter(Boolean).map((category) => category!.id),
+          ...wellbeingCategories.map((category) => category.id),
+        ])
+      }
+    >
       <div className="space-y-8">
         <section className="space-y-3">
           <div className="space-y-1">
