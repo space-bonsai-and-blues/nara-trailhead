@@ -128,6 +128,7 @@ export function StepScreen({
             ) : (
               <Link
                 to="/"
+                onClick={onStartOver}
                 className="inline-flex h-12 flex-[2] items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
               >
                 {t("common.startOver")}
