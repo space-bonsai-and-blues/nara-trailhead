@@ -3,6 +3,7 @@ import { Check } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { StepScreen } from "@/components/StepScreen";
 import { t, useTranslation } from "@/i18n";
+import type { Category } from "@/lib/categories";
 import { constraintCategories, wellbeingCategories } from "@/lib/categories";
 import { useFlow } from "@/lib/flow-store";
 import { cn } from "@/lib/utils";
