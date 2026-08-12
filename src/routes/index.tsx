@@ -1,10 +1,10 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useState } from "react";
 import { StepScreen } from "@/components/StepScreen";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { t } from "@/i18n";
+import { useFlow } from "@/lib/flow-store";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -19,11 +19,9 @@ export const Route = createFileRoute("/")({
 });
 
 function InputScreen() {
-  const [decision, setDecision] = useState("");
-  const [optionA, setOptionA] = useState("");
-  const [optionB, setOptionB] = useState("");
+  const { decision, optionA, optionB, setDecision, setOptionA, setOptionB } = useFlow();
 
-  const canContinue = decision.trim() && optionA.trim() && optionB.trim();
+  const canContinue = Boolean(decision.trim() && optionA.trim() && optionB.trim());
 
   return (
     <StepScreen path="/" continueDisabled={!canContinue}>
