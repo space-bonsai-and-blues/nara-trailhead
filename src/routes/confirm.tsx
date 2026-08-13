@@ -77,15 +77,7 @@ function ConfirmScreen() {
           <div className="flex items-end justify-between gap-4">
             <div className="space-y-1">
               <h2 className="text-sm font-semibold tracking-tight">{t("confirm.detectedTitle")}</h2>
-              <p className="text-xs text-muted-foreground">
-                {isPending
-                  ? t("confirm.detectedLoading")
-                  : detectedConstraints.length === 0
-                    ? t("confirm.detectedNone")
-                    : data?.source === "fallback"
-                      ? t("confirm.detectedFallback")
-                      : t("confirm.detectedHint")}
-              </p>
+              <p className="text-xs text-muted-foreground">{t("confirm.detectedHint")}</p>
             </div>
             <p className="shrink-0 text-xs text-muted-foreground">
               {t("common.selectedCount", {
@@ -95,16 +87,7 @@ function ConfirmScreen() {
             </p>
           </div>
 
-          {isPending ? (
-            <div
-              className="flex items-center gap-2 text-sm text-muted-foreground"
-              aria-live="polite"
-            >
-              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-            </div>
-          ) : (
-            <CategoryRows categories={constraintCategories} selected={selected} onToggle={toggle} />
-          )}
+          <CategoryRows categories={constraintCategories} selected={selected} onToggle={toggle} />
         </section>
 
         <section className="space-y-3">
