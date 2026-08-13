@@ -39,20 +39,9 @@ function ConfirmScreen() {
     retry: false,
   });
 
-  const detectedConstraints = useMemo(
-    () => constraintsFromNames(data?.categories ?? []),
-    [data?.categories],
-  );
+  // Detection still runs, but it never pre-ticks rows: the user picks everything.
+  void data;
 
-  // Pre-tick whatever the classifier detected, once its result arrives.
-  useEffect(() => {
-    if (detectedConstraints.length === 0) return;
-    setSelected((prev) => {
-      const next = new Set(prev);
-      for (const category of detectedConstraints) next.add(category.id);
-      return next;
-    });
-  }, [detectedConstraints]);
 
   const toggle = (id: string) => {
     setSelected((prev) => {
