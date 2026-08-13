@@ -65,7 +65,7 @@ function InputScreen() {
             onChange={(e) => setOptionA(e.target.value)}
             placeholder={t("input.optionAPlaceholder")}
           />
-          {missingOptionA ? requiredNote : null}
+          {missingOptions ? requiredNote : null}
         </div>
 
         <div className="space-y-2">
@@ -76,7 +76,7 @@ function InputScreen() {
             onChange={(e) => setOptionB(e.target.value)}
             placeholder={t("input.optionBPlaceholder")}
           />
-          {missingOptionB ? requiredNote : null}
+          {optionalNote}
         </div>
       </div>
 
