@@ -49,9 +49,11 @@ function ReportScreen() {
             {options.map((option) => (
               <div
                 key={option.key}
-                className="rounded-xl border border-border bg-card px-4 py-5 text-center"
+                className="flex flex-col rounded-xl border border-border bg-card px-4 py-5 text-center"
               >
-                <p className="text-sm font-medium leading-snug">{option.label}</p>
+                <p className="flex min-h-[2.5rem] items-center justify-center text-sm font-medium leading-snug">
+                  <span className="line-clamp-2">{option.label}</span>
+                </p>
                 <p className="mt-3 text-3xl font-semibold tabular-nums">
                   {formatSigned(option.score.total)}
                 </p>
