@@ -5,6 +5,7 @@
   "common.startOver": "Start over",
   "common.stepProgress": "Step {current} of {total}",
   "common.acknowledged": "{current} of {total} acknowledged",
+  "common.selectedCount": "{current} of {total} selected",
   "common.next": "Next",
 
   "input.title": "Your options",
