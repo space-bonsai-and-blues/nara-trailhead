@@ -23,8 +23,8 @@ function InputScreen() {
 
   const missingDecision = !decision.trim();
   const missingOptionA = !optionA.trim();
-  const missingOptionB = !optionB.trim();
-  const missingOptions = missingOptionA || missingOptionB;
+  // Spec: up to two options, two is the cap — only one is required to continue.
+  const missingOptions = missingOptionA && !optionB.trim();
   const canContinue = !missingDecision && !missingOptions;
 
   const footerHint = canContinue
@@ -35,7 +35,12 @@ function InputScreen() {
         ? t("input.hintDecision")
         : t("input.hintOptions");
 
-  const requiredNote = <span className="mt-1 block text-xs text-muted-foreground">{t("input.required")}</span>;
+  const requiredNote = (
+    <span className="mt-1 block text-xs text-muted-foreground">{t("input.required")}</span>
+  );
+  const optionalNote = (
+    <span className="mt-1 block text-xs text-muted-foreground">{t("input.optional")}</span>
+  );
 
   return (
     <StepScreen path="/" continueDisabled={!canContinue} footerHint={footerHint}>
