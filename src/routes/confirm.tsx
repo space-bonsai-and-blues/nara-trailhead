@@ -1,17 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
-import { Check, Loader2 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { Check } from "lucide-react";
+import { useState } from "react";
 import { StepScreen } from "@/components/StepScreen";
 import { t } from "@/i18n";
 import type { Category } from "@/lib/categories";
-import {
-  constraintCategories,
-  constraintsFromNames,
-  wellbeingCategories,
-} from "@/lib/categories";
-import { extractConcerns } from "@/lib/extract-concerns.functions";
+import { constraintCategories, wellbeingCategories } from "@/lib/categories";
 import { useFlow } from "@/lib/flow-store";
 import { cn } from "@/lib/utils";
 
@@ -28,19 +21,9 @@ export const Route = createFileRoute("/confirm")({
 });
 
 function ConfirmScreen() {
-  const { decision, setRelevantCategories } = useFlow();
+  const { setRelevantCategories } = useFlow();
   const [selected, setSelected] = useState<Set<string>>(new Set());
 
-  const classify = useServerFn(extractConcerns);
-  const { data, isPending } = useQuery({
-    queryKey: ["extract-concerns", decision],
-    queryFn: () => classify({ data: { userMessage: decision } }),
-    staleTime: Infinity,
-    retry: false,
-  });
-
-  // Detection still runs, but it never pre-ticks rows: the user picks everything.
-  void data;
 
 
   const toggle = (id: string) => {
