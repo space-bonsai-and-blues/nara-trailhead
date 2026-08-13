@@ -57,6 +57,7 @@ function ConfirmScreen() {
     <StepScreen
       path="/confirm"
       continueDisabled={!allAcknowledged}
+      footerHint={allAcknowledged ? undefined : t("confirm.gateHint")}
       onBeforeContinue={() =>
         setRelevantCategories([
           ...relevantConstraints.map((category) => category.id),
