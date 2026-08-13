@@ -1,17 +1,10 @@
-import { useQuery } from "@tanstack/react-query";
 import { createFileRoute } from "@tanstack/react-router";
-import { useServerFn } from "@tanstack/react-start";
-import { Check, Loader2 } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { Check } from "lucide-react";
+import { useState } from "react";
 import { StepScreen } from "@/components/StepScreen";
 import { t } from "@/i18n";
 import type { Category } from "@/lib/categories";
-import {
-  constraintCategories,
-  constraintsFromNames,
-  wellbeingCategories,
-} from "@/lib/categories";
-import { extractConcerns } from "@/lib/extract-concerns.functions";
+import { constraintCategories, wellbeingCategories } from "@/lib/categories";
 import { useFlow } from "@/lib/flow-store";
 import { cn } from "@/lib/utils";
 
@@ -28,31 +21,10 @@ export const Route = createFileRoute("/confirm")({
 });
 
 function ConfirmScreen() {
-  const { decision, setRelevantCategories } = useFlow();
+  const { setRelevantCategories } = useFlow();
   const [selected, setSelected] = useState<Set<string>>(new Set());
 
-  const classify = useServerFn(extractConcerns);
-  const { data, isPending } = useQuery({
-    queryKey: ["extract-concerns", decision],
-    queryFn: () => classify({ data: { userMessage: decision } }),
-    staleTime: Infinity,
-    retry: false,
-  });
 
-  const detectedConstraints = useMemo(
-    () => constraintsFromNames(data?.categories ?? []),
-    [data?.categories],
-  );
-
-  // Pre-tick whatever the classifier detected, once its result arrives.
-  useEffect(() => {
-    if (detectedConstraints.length === 0) return;
-    setSelected((prev) => {
-      const next = new Set(prev);
-      for (const category of detectedConstraints) next.add(category.id);
-      return next;
-    });
-  }, [detectedConstraints]);
 
   const toggle = (id: string) => {
     setSelected((prev) => {
@@ -88,15 +60,7 @@ function ConfirmScreen() {
           <div className="flex items-end justify-between gap-4">
             <div className="space-y-1">
               <h2 className="text-sm font-semibold tracking-tight">{t("confirm.detectedTitle")}</h2>
-              <p className="text-xs text-muted-foreground">
-                {isPending
-                  ? t("confirm.detectedLoading")
-                  : detectedConstraints.length === 0
-                    ? t("confirm.detectedNone")
-                    : data?.source === "fallback"
-                      ? t("confirm.detectedFallback")
-                      : t("confirm.detectedHint")}
-              </p>
+              <p className="text-xs text-muted-foreground">{t("confirm.detectedHint")}</p>
             </div>
             <p className="shrink-0 text-xs text-muted-foreground">
               {t("common.selectedCount", {
@@ -106,16 +70,7 @@ function ConfirmScreen() {
             </p>
           </div>
 
-          {isPending ? (
-            <div
-              className="flex items-center gap-2 text-sm text-muted-foreground"
-              aria-live="polite"
-            >
-              <Loader2 className="h-4 w-4 animate-spin" aria-hidden="true" />
-            </div>
-          ) : (
-            <CategoryRows categories={constraintCategories} selected={selected} onToggle={toggle} />
-          )}
+          <CategoryRows categories={constraintCategories} selected={selected} onToggle={toggle} />
         </section>
 
         <section className="space-y-3">
