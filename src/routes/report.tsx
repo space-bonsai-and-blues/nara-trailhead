@@ -32,19 +32,9 @@ function ReportScreen() {
   const labelA = optionA.trim() || translate("report.optionAFallback");
   const labelB = optionB.trim() || translate("report.optionBFallback");
 
-  // Group labels use the long form the first time they appear on this screen.
-  let constraintSeen = false;
-  let wellbeingSeen = false;
-  const groupLabel = (type: "constraint" | "wellbeing") => {
-    if (type === "constraint") {
-      const label = translate(constraintSeen ? "report.constraintShort" : "report.constraintFull");
-      constraintSeen = true;
-      return label;
-    }
-    const label = translate(wellbeingSeen ? "report.wellbeingShort" : "report.wellbeingFull");
-    wellbeingSeen = true;
-    return label;
-  };
+  // Group labels always use the full term / explanation form.
+  const groupLabel = (type: "constraint" | "wellbeing") =>
+    translate(type === "constraint" ? "report.constraintFull" : "report.wellbeingFull");
 
   const options = [
     { key: "a" as const, label: labelA, score: score.a },
