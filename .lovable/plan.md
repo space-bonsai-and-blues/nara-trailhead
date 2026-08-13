@@ -1,18 +1,19 @@
-# Make "What I need to consider" selectable on Confirm
+# Make both Confirm sections selectable (Step 2 of 6)
 
-Right now the constraint categories on Step 2 render as plain text chips — nothing to tap. Only the wellbeing rows below are interactive.
+Right now the constraint categories render as plain text chips — nothing to tap — and the wellbeing rows work as an acknowledge-all gate. Both become the same thing: pick what applies.
 
 ## What changes
 
-- Constraints become the same tappable rows as the wellbeing list: title, short description, check circle, multi-select.
-- Rows the classifier detected start pre-selected; the user can deselect any of them and select others from the full 11-constraint list.
-- The full list of 11 is shown so nothing relevant is hidden when auto-detection is off or returns nothing.
-- Only the constraints that are still selected (plus all 7 wellbeing categories) carry forward to Rating and Weighting.
-- The Continue gate stays as it is: all 7 wellbeing prompts must be acknowledged, with the existing hint under the button. Constraint selection is optional — picking none is valid.
-- Copy under the header changes to reflect the new behaviour: detected items are pre-ticked, tap to add or remove.
+- "What I need to consider" becomes tappable rows like the wellbeing list: title, description, check circle, multi-select. All 11 are shown.
+- Rows the classifier detected start pre-selected; the user can deselect them and select others.
+- "What I care about" stays as rows, but they are selections rather than acknowledgements — all 7 shown, none pre-selected.
+- Continue enables as soon as at least one category is selected in either section. No requirement to pick from both, and no requirement to touch all 7 wellbeing prompts.
+- Footer hint while nothing is picked: "Pick at least one category to continue."
+- Only the selected categories carry forward to Rating and Weighting.
+- Copy under each header updated: detected items are pre-ticked, tap to add or remove.
 
 ## Technical notes
 
-- `src/routes/confirm.tsx`: replace the chip block with the same row component the wellbeing section uses (extract a small shared `CategoryRow`), add a `selectedConstraints` state seeded from the query result via an effect, render `constraintCategories` (all 11), and pass the selected IDs into `setRelevantCategories` in `onBeforeContinue`.
-- `src/i18n/en.json`: update `confirm.detectedHint` / `confirm.detectedFallback` / `confirm.detectedNone` wording for the selectable list.
-- No change to the classifier, scoring, flow store, or later screens.
+- `src/routes/confirm.tsx`: extract a shared `CategoryRow`, hold one `selected` set covering both groups, seed it from the classifier result via an effect, render `constraintCategories` and `wellbeingCategories` as rows, gate Continue on `selected.size > 0`, pass the selected IDs to `setRelevantCategories` in `onBeforeContinue`.
+- `src/i18n/en.json`: update `confirm.detectedHint` / `confirm.detectedFallback` / `confirm.detectedNone` / `confirm.wellbeingHint`, replace `confirm.gateHint` with the pick-one wording; reuse a counter string for each section.
+- No change to the classifier, scoring, flow store, Dealbreaker screen, or Report.
