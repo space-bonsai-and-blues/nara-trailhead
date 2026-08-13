@@ -89,9 +89,7 @@ export interface ClassifyResult {
 function isValidCategoryArray(value: unknown): value is string[] {
   return (
     Array.isArray(value) &&
-    value.every(
-      (c) => typeof c === "string" && (VALID_CATEGORIES as readonly string[]).includes(c),
-    )
+    value.every((c) => typeof c === "string" && (VALID_CATEGORIES as readonly string[]).includes(c))
   );
 }
 

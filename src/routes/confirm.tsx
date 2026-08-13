@@ -102,7 +102,6 @@ function ConfirmScreen() {
           )}
         </section>
 
-
         <section className="space-y-3">
           <div className="flex items-end justify-between gap-4">
             <div className="space-y-1">

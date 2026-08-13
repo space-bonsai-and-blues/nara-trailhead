@@ -79,7 +79,6 @@ function InputScreen() {
           {optionalNote}
         </div>
       </div>
-
     </StepScreen>
   );
 }

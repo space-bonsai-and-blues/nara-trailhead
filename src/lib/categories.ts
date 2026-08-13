@@ -169,4 +169,3 @@ export function constraintsFromNames(names: string[]): Category[] {
   );
   return constraintCategories.filter((c) => ids.has(c.id));
 }
-
