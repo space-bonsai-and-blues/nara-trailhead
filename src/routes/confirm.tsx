@@ -57,6 +57,7 @@ function ConfirmScreen() {
     <StepScreen
       path="/confirm"
       continueDisabled={!allAcknowledged}
+      footerHint={allAcknowledged ? undefined : t("confirm.gateHint")}
       onBeforeContinue={() =>
         setRelevantCategories([
           ...relevantConstraints.map((category) => category.id),
@@ -100,7 +101,6 @@ function ConfirmScreen() {
             </div>
           )}
         </section>
-
 
         <section className="space-y-3">
           <div className="flex items-end justify-between gap-4">

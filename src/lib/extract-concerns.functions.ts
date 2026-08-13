@@ -8,9 +8,8 @@ const ExtractConcernsInput = z.object({ userMessage: z.string() });
 export const extractConcerns = createServerFn({ method: "POST" })
   .inputValidator((input: unknown) => ExtractConcernsInput.parse(input))
   .handler(async ({ data }): Promise<ClassifyResult> => {
-    const { CONSTRAINT_FALLBACK, MAX_INPUT_LENGTH, classifyWithRetries } = await import(
-      "./extract-concerns.server"
-    );
+    const { CONSTRAINT_FALLBACK, MAX_INPUT_LENGTH, classifyWithRetries } =
+      await import("./extract-concerns.server");
 
     const apiKey = process.env["OPENAI_API_KEY"];
     if (!apiKey) {
