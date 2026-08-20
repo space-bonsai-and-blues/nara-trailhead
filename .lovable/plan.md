@@ -18,7 +18,7 @@ en         English         (shown as just "English")
 th         ไทย             Thai
 vi         Tiếng Việt      Vietnamese
 id         Bahasa Indonesia  Indonesian
-ms         Bahasa Melayu   Malay
+ms         Bahasa Melayu   Bahasa Malaysia
 ta         தமிழ்            Tamil
 zh-Hans    简体中文         Chinese, Simplified
 zh-Hant    繁體中文         Chinese, Traditional
