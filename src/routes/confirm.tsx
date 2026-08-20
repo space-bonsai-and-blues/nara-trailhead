@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { Check } from "lucide-react";
 import { useState } from "react";
 import { StepScreen } from "@/components/StepScreen";
-import { t } from "@/i18n";
+import { t as staticT, useTranslation } from "@/i18n";
 import type { Category } from "@/lib/categories";
 import { constraintCategories, wellbeingCategories } from "@/lib/categories";
 import { useFlow } from "@/lib/flow-store";
@@ -11,16 +11,17 @@ import { cn } from "@/lib/utils";
 export const Route = createFileRoute("/confirm")({
   head: () => ({
     meta: [
-      { title: t("confirm.meta.title") },
-      { name: "description", content: t("confirm.meta.description") },
-      { property: "og:title", content: t("confirm.meta.title") },
-      { property: "og:description", content: t("confirm.meta.description") },
+      { title: staticT("confirm.meta.title") },
+      { name: "description", content: staticT("confirm.meta.description") },
+      { property: "og:title", content: staticT("confirm.meta.title") },
+      { property: "og:description", content: staticT("confirm.meta.description") },
     ],
   }),
   component: ConfirmScreen,
 });
 
 function ConfirmScreen() {
+  const { t } = useTranslation();
   const { setRelevantCategories } = useFlow();
   const [selected, setSelected] = useState<Set<string>>(new Set());
 
@@ -105,6 +106,7 @@ function CategoryRows({
   selected: Set<string>;
   onToggle: (id: string) => void;
 }) {
+  const { t } = useTranslation();
   return (
     <ul className="space-y-2">
       {categories.map((category) => {

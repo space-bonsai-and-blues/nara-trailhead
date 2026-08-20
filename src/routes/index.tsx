@@ -3,22 +3,23 @@ import { StepScreen } from "@/components/StepScreen";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { t } from "@/i18n";
+import { t as staticT, useTranslation } from "@/i18n";
 import { useFlow } from "@/lib/flow-store";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: t("input.meta.title") },
-      { name: "description", content: t("input.meta.description") },
-      { property: "og:title", content: t("input.meta.title") },
-      { property: "og:description", content: t("input.meta.description") },
+      { title: staticT("input.meta.title") },
+      { name: "description", content: staticT("input.meta.description") },
+      { property: "og:title", content: staticT("input.meta.title") },
+      { property: "og:description", content: staticT("input.meta.description") },
     ],
   }),
   component: InputScreen,
 });
 
 function InputScreen() {
+  const { t } = useTranslation();
   const { decision, optionA, optionB, setDecision, setOptionA, setOptionB } = useFlow();
 
   const missingDecision = !decision.trim();

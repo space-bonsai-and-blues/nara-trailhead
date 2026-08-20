@@ -53,8 +53,8 @@ export function StepScreen({
     "inline-flex h-12 flex-1 items-center justify-center rounded-full border border-border text-sm font-medium transition-colors hover:bg-accent";
 
   return (
-    <div className="flex min-h-screen flex-col bg-background text-foreground">
-      <header className="mx-auto w-full max-w-md px-5 pt-8">
+    <div className="flex min-h-[calc(100vh-3.5rem)] flex-col bg-background text-foreground">
+      <header className="mx-auto w-full max-w-md px-5 pt-6">
         <div className="flex items-baseline justify-between gap-3">
           <p className="text-xs font-medium uppercase tracking-[0.18em] text-muted-foreground">
             {t("common.stepProgress", { current: index + 1, total })}

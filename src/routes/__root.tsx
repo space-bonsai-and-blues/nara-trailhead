@@ -12,6 +12,8 @@ import { useEffect, type ReactNode } from "react";
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 import { FlowProvider } from "../lib/flow-store";
+import { LocaleProvider } from "../i18n";
+import { AppHeader } from "../components/AppHeader";
 
 function NotFoundComponent() {
   return (
@@ -92,6 +94,27 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
         rel: "stylesheet",
         href: appCss,
       },
+      { rel: "preconnect", href: "https://fonts.googleapis.com" },
+      { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
+      {
+        rel: "stylesheet",
+        href:
+          "https://fonts.googleapis.com/css2?family=Noto+Sans:wght@400;500;600" +
+          "&family=Noto+Sans+Thai:wght@400;500;600" +
+          "&family=Noto+Sans+Lao:wght@400;500;600" +
+          "&family=Noto+Sans+Myanmar:wght@400;500;600" +
+          "&family=Noto+Sans+Khmer:wght@400;500;600" +
+          "&family=Noto+Sans+Tamil:wght@400;500;600" +
+          "&family=Noto+Sans+Devanagari:wght@400;500;600" +
+          "&family=Noto+Sans+Sinhala:wght@400;500;600" +
+          "&family=Noto+Sans+Bengali:wght@400;500;600" +
+          "&family=Noto+Sans+Arabic:wght@400;500;600" +
+          "&family=Noto+Sans+SC:wght@400;500;600" +
+          "&family=Noto+Sans+TC:wght@400;500;600" +
+          "&family=Noto+Sans+JP:wght@400;500;600" +
+          "&family=Noto+Sans+KR:wght@400;500;600" +
+          "&display=swap",
+      },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),
@@ -120,10 +143,13 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <FlowProvider>
-        {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-        <Outlet />
-      </FlowProvider>
+      <LocaleProvider>
+        <FlowProvider>
+          <AppHeader />
+          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+          <Outlet />
+        </FlowProvider>
+      </LocaleProvider>
     </QueryClientProvider>
   );
 }

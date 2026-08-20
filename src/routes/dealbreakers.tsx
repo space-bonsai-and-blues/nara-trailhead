@@ -179,6 +179,7 @@ function CategoryGroup({
   relevantSet: Set<string>;
   onToggle: (id: string) => void;
 }) {
+  const { t } = useTranslation();
   return (
     <section className="space-y-3">
       <h2 className="text-sm font-semibold tracking-tight">{title}</h2>
