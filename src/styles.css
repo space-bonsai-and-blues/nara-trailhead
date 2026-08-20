@@ -19,6 +19,11 @@
  */
 
 @theme inline {
+  --font-sans:
+    ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Noto Sans", "Noto Sans Thai",
+    "Noto Sans Lao", "Noto Sans Myanmar", "Noto Sans Khmer", "Noto Sans Tamil",
+    "Noto Sans Devanagari", "Noto Sans Sinhala", "Noto Sans Bengali", "Noto Sans Arabic",
+    "Noto Sans SC", "Noto Sans TC", "Noto Sans JP", "Noto Sans KR", sans-serif;
   --radius-sm: calc(var(--radius) - 4px);
   --radius-md: calc(var(--radius) - 2px);
   --radius-lg: var(--radius);
@@ -140,5 +145,6 @@
   body {
     background-color: var(--color-background);
     color: var(--color-foreground);
+    font-family: var(--font-sans);
   }
 }
