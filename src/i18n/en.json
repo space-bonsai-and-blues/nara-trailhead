@@ -142,8 +142,8 @@
   "adminDashboard.sessionEvents": "Events",
   "adminDashboard.signOut": "Sign out",
 
-  "footer.forgetMe": "Forget me",
-  "footer.forgetMeDescription": "Delete all recorded session data for this device and start fresh.",
+  "footer.forgetMe": "forget me",
+  "footer.forgetMeDescription": "Trailhead keeps a private record of this session to help improve the app",
   "footer.forgetMeConfirm": "All your session history on this device will be deleted. Continue?",
   "footer.forgetMeDone": "Your data has been deleted.",
 
