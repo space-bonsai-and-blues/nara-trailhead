@@ -147,8 +147,11 @@ function RootComponent() {
       <LocaleProvider>
         <FlowProvider>
           <AppHeader />
-          {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
-          <Outlet />
+          <div className="pb-16">
+            {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
+            <Outlet />
+          </div>
+          <AppFooter />
         </FlowProvider>
       </LocaleProvider>
     </QueryClientProvider>
