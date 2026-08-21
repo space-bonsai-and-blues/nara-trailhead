@@ -58,7 +58,7 @@ function AdminDashboardPage() {
                     <div className="flex items-center justify-between">
                       <span className="font-medium">{new Date(session.started_at).toLocaleString()}</span>
                       <span className="text-sm text-muted-foreground">
-                        {session.completed ? t("adminDashboard.sessionCompleted") : "In progress"}
+                        {session.completed ? t("adminDashboard.sessionCompleted") : t("adminDashboard.sessionInProgress")}
                       </span>
                     </div>
                     <div className="mt-2 text-sm text-muted-foreground">
