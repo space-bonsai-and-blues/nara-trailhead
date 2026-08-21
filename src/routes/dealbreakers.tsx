@@ -1,12 +1,13 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { Check } from "lucide-react";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { StepScreen } from "@/components/StepScreen";
 import { t, useTranslation } from "@/i18n";
 import type { Category } from "@/lib/categories";
 import { constraintCategories, wellbeingCategories } from "@/lib/categories";
 import { useFlow } from "@/lib/flow-store";
 import { cn } from "@/lib/utils";
+import { logButton, logState } from "@/lib/session-logger";
 
 export const Route = createFileRoute("/dealbreakers")({
   head: () => ({
@@ -29,6 +30,14 @@ function DealbreakersScreen() {
 
   const [answer, setAnswer] = useState<GateAnswer>(null);
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const loggedRef = useRef(false);
+
+  useEffect(() => {
+    if (!loggedRef.current) {
+      loggedRef.current = true;
+      logState("dealbreakers", { screen: "dealbreakers", event: "screen_view" });
+    }
+  }, []);
 
   useEffect(() => {
     setAnswer(null);
@@ -44,30 +53,37 @@ function DealbreakersScreen() {
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
+        logButton("dealbreakers", "dealbreaker_deselect", { categoryId: id });
       } else {
         next.add(id);
+        logButton("dealbreakers", "dealbreaker_select", { categoryId: id });
       }
       return next;
     });
   };
 
   const handleNo = () => {
+    logButton("dealbreakers", "no_dealbreakers");
     void navigate({ to: "/report" });
   };
 
   const handleYes = () => {
+    logButton("dealbreakers", "has_dealbreakers");
     setAnswer("yes");
   };
 
   const handleNewRound = () => {
     const ids = Array.from(selected);
+    logState("dealbreakers", { screen: "dealbreakers", event: "new_round", dealbreakers: ids });
     setDealbreakers(ids);
     mergeRelevantCategories(ids);
     void navigate({ to: "/rating" });
   };
 
   const handleFinalSummary = () => {
-    setDealbreakers(Array.from(selected));
+    const ids = Array.from(selected);
+    logState("dealbreakers", { screen: "dealbreakers", event: "final_summary", dealbreakers: ids });
+    setDealbreakers(ids);
     void navigate({ to: "/report" });
   };
 
