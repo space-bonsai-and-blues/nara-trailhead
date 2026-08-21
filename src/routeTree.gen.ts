@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ConfirmRouteImport } from './routes/confirm'
 import { Route as DealbreakersRouteImport } from './routes/dealbreakers'
 import { Route as RatingRouteImport } from './routes/rating'
@@ -19,6 +20,11 @@ import { Route as WeightingRouteImport } from './routes/weighting'
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthRoute = AuthRouteImport.update({
+  id: '/auth',
+  path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
 const ConfirmRoute = ConfirmRouteImport.update({
@@ -49,6 +55,7 @@ const WeightingRoute = WeightingRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/confirm': typeof ConfirmRoute
   '/dealbreakers': typeof DealbreakersRoute
   '/rating': typeof RatingRoute
@@ -57,6 +64,7 @@ export interface FileRoutesByFullPath {
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/confirm': typeof ConfirmRoute
   '/dealbreakers': typeof DealbreakersRoute
   '/rating': typeof RatingRoute
@@ -66,6 +74,7 @@ export interface FileRoutesByTo {
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/auth': typeof AuthRoute
   '/confirm': typeof ConfirmRoute
   '/dealbreakers': typeof DealbreakersRoute
   '/rating': typeof RatingRoute
@@ -75,12 +84,26 @@ export interface FileRoutesById {
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
-    '/' | '/confirm' | '/dealbreakers' | '/rating' | '/report' | '/weighting'
+    | '/'
+    | '/auth'
+    | '/confirm'
+    | '/dealbreakers'
+    | '/rating'
+    | '/report'
+    | '/weighting'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/confirm' | '/dealbreakers' | '/rating' | '/report' | '/weighting'
+  to:
+    | '/'
+    | '/auth'
+    | '/confirm'
+    | '/dealbreakers'
+    | '/rating'
+    | '/report'
+    | '/weighting'
   id:
     | '__root__'
     | '/'
+    | '/auth'
     | '/confirm'
     | '/dealbreakers'
     | '/rating'
@@ -90,6 +113,7 @@ export interface FileRouteTypes {
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthRoute: typeof AuthRoute
   ConfirmRoute: typeof ConfirmRoute
   DealbreakersRoute: typeof DealbreakersRoute
   RatingRoute: typeof RatingRoute
@@ -104,6 +128,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/confirm': {
@@ -146,6 +177,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthRoute: AuthRoute,
   ConfirmRoute: ConfirmRoute,
   DealbreakersRoute: DealbreakersRoute,
   RatingRoute: RatingRoute,
