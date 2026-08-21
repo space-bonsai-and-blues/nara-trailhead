@@ -136,6 +136,7 @@
   "adminDashboard.noSessions": "No sessions recorded yet.",
   "adminDashboard.sessionStarted": "Started",
   "adminDashboard.sessionCompleted": "Completed",
+  "adminDashboard.sessionInProgress": "In progress",
   "adminDashboard.sessionEvents": "Events",
   "adminDashboard.signOut": "Sign out",
 
