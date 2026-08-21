@@ -14,6 +14,7 @@ import { reportLovableError } from "../lib/lovable-error-reporting";
 import { FlowProvider } from "../lib/flow-store";
 import { LocaleProvider } from "../i18n";
 import { AppHeader } from "../components/AppHeader";
+import { AppFooter } from "../components/AppFooter";
 
 function NotFoundComponent() {
   return (
