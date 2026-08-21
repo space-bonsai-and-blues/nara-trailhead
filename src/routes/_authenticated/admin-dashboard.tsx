@@ -17,6 +17,7 @@ function AdminDashboardPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin-sessions"],
     queryFn: () => fetchSessions(),
+    retry: false,
   });
 
   async function signOut() {
