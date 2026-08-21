@@ -14,7 +14,7 @@ function AuthPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const search = useSearch({ from: "/auth" }) as { redirect?: string };
-  const [mode, setMode] = useState<"signin" | "signup" | "forgot">("signin");
+  const [mode, setMode] = useState<"signin" | "forgot">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState<string | null>(null);
@@ -30,17 +30,7 @@ function AuthPage() {
     setLoading(true);
 
     try {
-      if (mode === "signup") {
-        const { error } = await supabase.auth.signUp({
-          email,
-          password,
-          options: {
-            emailRedirectTo: window.location.origin,
-          },
-        });
-        if (error) throw error;
-        setMessage(t("auth.signupSuccess"));
-      } else if (mode === "forgot") {
+      if (mode === "forgot") {
         const { error } = await supabase.auth.resetPasswordForEmail(email, {
           redirectTo: `${window.location.origin}/reset-password`,
         });
@@ -62,7 +52,7 @@ function AuthPage() {
     <div className="flex min-h-[calc(100vh-3.5rem)] flex-col justify-center bg-background px-5">
       <div className="mx-auto w-full max-w-md space-y-6">
         <h1 className="text-2xl font-semibold tracking-tight">
-          {mode === "signup" ? t("auth.signupTitle") : mode === "forgot" ? t("auth.forgotTitle") : t("auth.signinTitle")}
+          {mode === "forgot" ? t("auth.forgotTitle") : t("auth.signinTitle")}
         </h1>
 
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -98,26 +88,19 @@ function AuthPage() {
           <Button type="submit" disabled={loading} className="w-full">
             {loading
               ? t("common.loading")
-              : mode === "signup"
-                ? t("auth.signupButton")
-                : mode === "forgot"
-                  ? t("auth.resetButton")
-                  : t("auth.signinButton")}
+              : mode === "forgot"
+                ? t("auth.resetButton")
+                : t("auth.signinButton")}
           </Button>
         </form>
 
         <div className="flex flex-col gap-2 text-sm text-muted-foreground">
           {mode === "signin" && (
-            <>
-              <button type="button" onClick={() => setMode("signup")} className="text-left hover:underline">
-                {t("auth.switchToSignup")}
-              </button>
-              <button type="button" onClick={() => setMode("forgot")} className="text-left hover:underline">
-                {t("auth.forgotPassword")}
-              </button>
-            </>
+            <button type="button" onClick={() => setMode("forgot")} className="text-left hover:underline">
+              {t("auth.forgotPassword")}
+            </button>
           )}
-          {(mode === "signup" || mode === "forgot") && (
+          {mode === "forgot" && (
             <button type="button" onClick={() => setMode("signin")} className="text-left hover:underline">
               {t("auth.switchToSignin")}
             </button>
