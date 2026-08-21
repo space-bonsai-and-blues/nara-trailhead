@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as ConfirmRouteImport } from './routes/confirm'
 import { Route as DealbreakersRouteImport } from './routes/dealbreakers'
@@ -17,10 +18,15 @@ import { Route as RatingRouteImport } from './routes/rating'
 import { Route as ReportRouteImport } from './routes/report'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as WeightingRouteImport } from './routes/weighting'
+import { Route as AuthenticatedClaimAdminRouteImport } from './routes/_authenticated/claim-admin'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -58,6 +64,11 @@ const WeightingRoute = WeightingRouteImport.update({
   path: '/weighting',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedClaimAdminRoute = AuthenticatedClaimAdminRouteImport.update({
+  id: '/claim-admin',
+  path: '/claim-admin',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
@@ -68,6 +79,7 @@ export interface FileRoutesByFullPath {
   '/report': typeof ReportRoute
   '/reset-password': typeof ResetPasswordRoute
   '/weighting': typeof WeightingRoute
+  '/claim-admin': typeof AuthenticatedClaimAdminRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -78,10 +90,12 @@ export interface FileRoutesByTo {
   '/report': typeof ReportRoute
   '/reset-password': typeof ResetPasswordRoute
   '/weighting': typeof WeightingRoute
+  '/claim-admin': typeof AuthenticatedClaimAdminRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
   '/confirm': typeof ConfirmRoute
   '/dealbreakers': typeof DealbreakersRoute
@@ -89,6 +103,7 @@ export interface FileRoutesById {
   '/report': typeof ReportRoute
   '/reset-password': typeof ResetPasswordRoute
   '/weighting': typeof WeightingRoute
+  '/_authenticated/claim-admin': typeof AuthenticatedClaimAdminRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -101,6 +116,7 @@ export interface FileRouteTypes {
     | '/report'
     | '/reset-password'
     | '/weighting'
+    | '/claim-admin'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -111,9 +127,11 @@ export interface FileRouteTypes {
     | '/report'
     | '/reset-password'
     | '/weighting'
+    | '/claim-admin'
   id:
     | '__root__'
     | '/'
+    | '/_authenticated'
     | '/auth'
     | '/confirm'
     | '/dealbreakers'
@@ -121,10 +139,12 @@ export interface FileRouteTypes {
     | '/report'
     | '/reset-password'
     | '/weighting'
+    | '/_authenticated/claim-admin'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
   ConfirmRoute: typeof ConfirmRoute
   DealbreakersRoute: typeof DealbreakersRoute
@@ -141,6 +161,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/_authenticated': {
+      id: '/_authenticated'
+      path: ''
+      fullPath: '/'
+      preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth': {
@@ -192,11 +219,30 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WeightingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/claim-admin': {
+      id: '/_authenticated/claim-admin'
+      path: '/claim-admin'
+      fullPath: '/claim-admin'
+      preLoaderRoute: typeof AuthenticatedClaimAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
   }
 }
 
+interface AuthenticatedRouteRouteChildren {
+  AuthenticatedClaimAdminRoute: typeof AuthenticatedClaimAdminRoute
+}
+
+const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedClaimAdminRoute: AuthenticatedClaimAdminRoute,
+}
+
+const AuthenticatedRouteRouteWithChildren =
+  AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
   ConfirmRoute: ConfirmRoute,
   DealbreakersRoute: DealbreakersRoute,
