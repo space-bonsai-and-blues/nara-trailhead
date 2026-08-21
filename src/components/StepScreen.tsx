@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { useTranslation } from "@/i18n";
 import { getStep, type StepPath } from "@/lib/steps";
 import { cn } from "@/lib/utils";
+import { logButton } from "@/lib/session-logger";
 
 export type StepScreenProps = {
   path: StepPath;
