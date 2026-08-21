@@ -1,10 +1,12 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useEffect, useRef } from "react";
 import { StepScreen } from "@/components/StepScreen";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { t as staticT, useTranslation } from "@/i18n";
 import { useFlow } from "@/lib/flow-store";
+import { ensureSession, logText, logState } from "@/lib/session-logger";
 
 export const Route = createFileRoute("/")({
   head: () => ({
