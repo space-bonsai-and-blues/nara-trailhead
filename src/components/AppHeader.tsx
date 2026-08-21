@@ -6,7 +6,7 @@ import { supabase } from "@/integrations/supabase/client";
 
 export function AppHeader() {
   const { t } = useTranslation();
-  const [user, setUser] = useState<{ email?: string } | null>(null);
+  const [user, setUser] = useState<{ email: string | undefined } | null>(null);
 
   useEffect(() => {
     void supabase.auth.getUser().then(({ data }) => {
