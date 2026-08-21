@@ -240,5 +240,5 @@ export const listSessions = createServerFn({ method: "GET" })
       throw new Error("Failed to list sessions");
     }
 
-    return { sessions: rows ?? [] };
+    return { forbidden: false as const, sessions: rows ?? [] };
   });
