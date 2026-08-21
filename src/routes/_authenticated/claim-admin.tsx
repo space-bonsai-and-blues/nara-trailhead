@@ -33,13 +33,22 @@ function ClaimAdminPage() {
     setLoading(true);
 
     try {
-      await claimFirstAdmin({ data: { secret } });
-      void navigate({ to: "/admin-dashboard" });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : t("claimAdmin.invalid"));
+      const res = await claimFirstAdmin({ data: { secret } });
+      if (res.ok) {
+        void navigate({ to: "/admin-dashboard" });
+      } else if (res.reason === "already_claimed") {
+        setClaimed(true);
+      } else if (res.reason === "not_configured") {
+        setError("Admin passcode is not configured for this project.");
+      } else {
+        setError(t("claimAdmin.invalid"));
+      }
+    } catch {
+      setError(t("claimAdmin.invalid"));
     } finally {
       setLoading(false);
     }
+
   }
 
   if (claimed === null) {
