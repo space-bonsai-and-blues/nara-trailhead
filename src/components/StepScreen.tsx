@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 import { useTranslation } from "@/i18n";
 import { getStep, type StepPath } from "@/lib/steps";
 import { cn } from "@/lib/utils";
+import { logButton } from "@/lib/session-logger";
 
 export type StepScreenProps = {
   path: StepPath;
@@ -98,11 +99,22 @@ export function StepScreen({
           ) : null}
           <div className="flex items-center gap-3">
             {onBack ? (
-              <button type="button" onClick={onBack} className={secondaryClass}>
+              <button
+                type="button"
+                onClick={() => {
+                  logButton(step.path, "back");
+                  onBack();
+                }}
+                className={secondaryClass}
+              >
                 {t("common.back")}
               </button>
             ) : previous ? (
-              <Link to={previous.path} className={secondaryClass}>
+              <Link
+                to={previous.path}
+                onClick={() => logButton(step.path, "back")}
+                className={secondaryClass}
+              >
                 {t("common.back")}
               </Link>
             ) : null}
@@ -110,7 +122,10 @@ export function StepScreen({
             {onContinue ? (
               <button
                 type="button"
-                onClick={onContinue}
+                onClick={() => {
+                  logButton(step.path, continueLabel ?? "continue");
+                  onContinue();
+                }}
                 disabled={continueDisabled}
                 className={primaryClass}
               >
@@ -120,7 +135,10 @@ export function StepScreen({
               <Link
                 to={next.path}
                 aria-disabled={continueDisabled}
-                onClick={onBeforeContinue}
+                onClick={() => {
+                  logButton(step.path, continueLabel ?? "continue");
+                  onBeforeContinue?.();
+                }}
                 className={primaryClass}
               >
                 {continueLabel ?? t("common.continue")}
@@ -128,7 +146,10 @@ export function StepScreen({
             ) : (
               <Link
                 to="/"
-                onClick={onStartOver}
+                onClick={() => {
+                  logButton(step.path, "start_over");
+                  onStartOver?.();
+                }}
                 className="inline-flex h-12 flex-[2] items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
               >
                 {t("common.startOver")}

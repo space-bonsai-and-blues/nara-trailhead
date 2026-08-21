@@ -1,12 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { Check } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { StepScreen } from "@/components/StepScreen";
 import { t as staticT, useTranslation } from "@/i18n";
 import type { Category } from "@/lib/categories";
 import { constraintCategories, wellbeingCategories } from "@/lib/categories";
+import { extractConcerns } from "@/lib/extract-concerns.functions";
 import { useFlow } from "@/lib/flow-store";
 import { cn } from "@/lib/utils";
+import { logAI, logButton, logState } from "@/lib/session-logger";
 
 export const Route = createFileRoute("/confirm")({
   head: () => ({
@@ -22,18 +26,45 @@ export const Route = createFileRoute("/confirm")({
 
 function ConfirmScreen() {
   const { t } = useTranslation();
-  const { setRelevantCategories } = useFlow();
+  const { decision, setRelevantCategories } = useFlow();
   const [selected, setSelected] = useState<Set<string>>(new Set());
+  const loggedRef = useRef(false);
+  const aiLoggedRef = useRef(false);
 
+  const classify = useServerFn(extractConcerns);
+  const { data: classifyResult } = useQuery({
+    queryKey: ["extract-concerns", decision],
+    queryFn: () => classify({ data: { userMessage: decision } }),
+    enabled: decision.trim().length > 0,
+    staleTime: Infinity,
+  });
 
+  useEffect(() => {
+    if (!loggedRef.current) {
+      loggedRef.current = true;
+      logState("confirm", { screen: "confirm", event: "screen_view" });
+    }
+  }, []);
+
+  useEffect(() => {
+    if (classifyResult && !aiLoggedRef.current) {
+      aiLoggedRef.current = true;
+      logAI("confirm", {
+        source: classifyResult.source,
+        categories: classifyResult.categories,
+      });
+    }
+  }, [classifyResult]);
 
   const toggle = (id: string) => {
     setSelected((prev) => {
       const next = new Set(prev);
       if (next.has(id)) {
         next.delete(id);
+        logButton("confirm", "category_deselect", { categoryId: id });
       } else {
         next.add(id);
+        logButton("confirm", "category_select", { categoryId: id });
       }
       return next;
     });
@@ -48,13 +79,17 @@ function ConfirmScreen() {
       path="/confirm"
       continueDisabled={!hasSelection}
       footerHint={hasSelection ? undefined : t("confirm.gateHint")}
-      onBeforeContinue={() =>
-        setRelevantCategories(
-          [...constraintCategories, ...wellbeingCategories]
-            .filter((category) => selected.has(category.id))
-            .map((category) => category.id),
-        )
-      }
+      onBeforeContinue={() => {
+        const ids = [...constraintCategories, ...wellbeingCategories]
+          .filter((category) => selected.has(category.id))
+          .map((category) => category.id);
+        setRelevantCategories(ids);
+        logState("confirm", {
+          screen: "confirm",
+          event: "continue",
+          selectedCategories: ids,
+        });
+      }}
     >
       <div className="space-y-8">
         <section className="space-y-3">

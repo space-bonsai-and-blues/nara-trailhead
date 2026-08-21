@@ -1,10 +1,11 @@
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { RatingSlider } from "@/components/RatingSlider";
 import { StepScreen } from "@/components/StepScreen";
 import { t, useTranslation } from "@/i18n";
 import { getCategoryById } from "@/lib/categories";
 import { getRating, useFlow, type OptionKey } from "@/lib/flow-store";
+import { logState } from "@/lib/session-logger";
 
 export const Route = createFileRoute("/rating")({
   head: () => ({
@@ -23,10 +24,24 @@ function RatingScreen() {
   const navigate = useNavigate();
   const { relevantCategories, ratings, setRating, optionA, optionB } = useFlow();
   const [index, setIndex] = useState(0);
+  const loggedRef = useRef<Set<number>>(new Set());
 
   const total = relevantCategories.length;
   const categoryId = relevantCategories[index];
   const category = categoryId ? getCategoryById(categoryId) : undefined;
+
+  useEffect(() => {
+    if (category && !loggedRef.current.has(index)) {
+      loggedRef.current.add(index);
+      logState("rating", {
+        screen: "rating",
+        event: "category_view",
+        categoryId: category.id,
+        categoryIndex: index + 1,
+        total,
+      });
+    }
+  }, [category, index, total]);
 
   if (!categoryId || !category) {
     return (
@@ -45,6 +60,12 @@ function RatingScreen() {
   };
 
   const handleNext = () => {
+    logState("rating", {
+      screen: "rating",
+      event: "next",
+      categoryId: category.id,
+      ratings: { a: markers.a.value, b: markers.b.value },
+    });
     if (index < total - 1) {
       setIndex(index + 1);
     } else {
@@ -58,6 +79,17 @@ function RatingScreen() {
     } else {
       void navigate({ to: "/confirm" });
     }
+  };
+
+  const handleRatingChange = (option: OptionKey, marker: { value: number; touched: boolean }) => {
+    setRating(categoryId, option, marker);
+    logState("rating", {
+      screen: "rating",
+      event: "rating_change",
+      categoryId: category.id,
+      option,
+      value: marker.value,
+    });
   };
 
   return (
@@ -79,7 +111,7 @@ function RatingScreen() {
         <RatingSlider
           markers={markers}
           labels={labels}
-          onChange={(option, marker) => setRating(categoryId, option, marker)}
+          onChange={handleRatingChange}
         />
       </div>
     </StepScreen>

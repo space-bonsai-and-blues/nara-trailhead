@@ -1,10 +1,11 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { StepScreen } from "@/components/StepScreen";
 import { t, useTranslation, type StringId } from "@/i18n";
 import { getCategoryById } from "@/lib/categories";
 import { useFlow } from "@/lib/flow-store";
 import { computeScore, formatSigned, type CategoryScore } from "@/lib/scoring";
+import { completeSession, logState } from "@/lib/session-logger";
 
 export const Route = createFileRoute("/report")({
   head: () => ({
@@ -23,11 +24,29 @@ function ReportScreen() {
   const { optionA, optionB, ratings, weights, relevantCategories, dealbreakers, resetFlow } =
     useFlow();
   const [open, setOpen] = useState(false);
+  const loggedRef = useRef(false);
 
   const score = useMemo(
     () => computeScore(ratings, weights, relevantCategories),
     [ratings, weights, relevantCategories],
   );
+
+  useEffect(() => {
+    if (!loggedRef.current) {
+      loggedRef.current = true;
+      logState("report", {
+        screen: "report",
+        event: "screen_view",
+        totals: { a: score.a.total, b: score.b.total },
+        dealbreakers,
+      });
+      void completeSession({
+        decision_text: optionA || optionB ? { optionA, optionB } : undefined,
+        totals: { a: score.a.total, b: score.b.total },
+        dealbreakers,
+      });
+    }
+  }, [score, dealbreakers, optionA, optionB]);
 
   const labelA = optionA.trim() || translate("report.optionAFallback");
   const labelB = optionB.trim() || translate("report.optionBFallback");
@@ -41,8 +60,13 @@ function ReportScreen() {
     { key: "b" as const, label: labelB, score: score.b },
   ];
 
+  const handleStartOver = () => {
+    logState("report", { screen: "report", event: "start_over" });
+    resetFlow();
+  };
+
   return (
-    <StepScreen path="/report" onStartOver={resetFlow}>
+    <StepScreen path="/report" onStartOver={handleStartOver}>
       <div className="space-y-8 pb-4">
         <section aria-label={translate("report.totalsLabel")}>
           <div className="grid grid-cols-2 gap-3">
