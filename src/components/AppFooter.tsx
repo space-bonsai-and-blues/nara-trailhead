@@ -31,7 +31,7 @@ export function AppFooter() {
           <AlertDialogTrigger asChild>
             <button
               type="button"
-              className="ml-4 text-xs font-medium text-destructive underline-offset-2 hover:underline"
+              className="ml-4 text-xs font-medium text-muted-foreground underline underline-offset-2"
             >
               {done ? t("footer.forgetMeDone") : t("footer.forgetMe")}
             </button>
