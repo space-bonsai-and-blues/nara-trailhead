@@ -14,7 +14,7 @@ function AuthPage() {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const search = useSearch({ from: "/auth" }) as { redirect?: string };
-  const [mode, setMode] = useState<"signin" | "signup" | "forgot">("signin");
+  const [mode, setMode] = useState<"signin" | "forgot">("signin");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState<string | null>(null);
