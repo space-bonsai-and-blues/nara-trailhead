@@ -15,6 +15,7 @@ import { Route as ConfirmRouteImport } from './routes/confirm'
 import { Route as DealbreakersRouteImport } from './routes/dealbreakers'
 import { Route as RatingRouteImport } from './routes/rating'
 import { Route as ReportRouteImport } from './routes/report'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as WeightingRouteImport } from './routes/weighting'
 
 const IndexRoute = IndexRouteImport.update({
@@ -47,6 +48,11 @@ const ReportRoute = ReportRouteImport.update({
   path: '/report',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const WeightingRoute = WeightingRouteImport.update({
   id: '/weighting',
   path: '/weighting',
@@ -60,6 +66,7 @@ export interface FileRoutesByFullPath {
   '/dealbreakers': typeof DealbreakersRoute
   '/rating': typeof RatingRoute
   '/report': typeof ReportRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/weighting': typeof WeightingRoute
 }
 export interface FileRoutesByTo {
@@ -69,6 +76,7 @@ export interface FileRoutesByTo {
   '/dealbreakers': typeof DealbreakersRoute
   '/rating': typeof RatingRoute
   '/report': typeof ReportRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/weighting': typeof WeightingRoute
 }
 export interface FileRoutesById {
@@ -79,6 +87,7 @@ export interface FileRoutesById {
   '/dealbreakers': typeof DealbreakersRoute
   '/rating': typeof RatingRoute
   '/report': typeof ReportRoute
+  '/reset-password': typeof ResetPasswordRoute
   '/weighting': typeof WeightingRoute
 }
 export interface FileRouteTypes {
@@ -90,6 +99,7 @@ export interface FileRouteTypes {
     | '/dealbreakers'
     | '/rating'
     | '/report'
+    | '/reset-password'
     | '/weighting'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -99,6 +109,7 @@ export interface FileRouteTypes {
     | '/dealbreakers'
     | '/rating'
     | '/report'
+    | '/reset-password'
     | '/weighting'
   id:
     | '__root__'
@@ -108,6 +119,7 @@ export interface FileRouteTypes {
     | '/dealbreakers'
     | '/rating'
     | '/report'
+    | '/reset-password'
     | '/weighting'
   fileRoutesById: FileRoutesById
 }
@@ -118,6 +130,7 @@ export interface RootRouteChildren {
   DealbreakersRoute: typeof DealbreakersRoute
   RatingRoute: typeof RatingRoute
   ReportRoute: typeof ReportRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
   WeightingRoute: typeof WeightingRoute
 }
 
@@ -165,6 +178,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ReportRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/weighting': {
       id: '/weighting'
       path: '/weighting'
@@ -182,6 +202,7 @@ const rootRouteChildren: RootRouteChildren = {
   DealbreakersRoute: DealbreakersRoute,
   RatingRoute: RatingRoute,
   ReportRoute: ReportRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
   WeightingRoute: WeightingRoute,
 }
 export const routeTree = rootRouteImport

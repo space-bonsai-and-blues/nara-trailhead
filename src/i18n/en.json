@@ -115,6 +115,11 @@
   "auth.switchToSignup": "Need an account? Create one",
   "auth.switchToSignin": "Already have an account? Sign in",
   "auth.forgotPassword": "Forgot password?",
+  "auth.resetTitle": "Set new password",
+  "auth.newPasswordLabel": "New password",
+  "auth.newPasswordPlaceholder": "••••••••",
+  "auth.updatePasswordButton": "Update password",
+  "auth.resetSuccess": "Password updated. Redirecting…",
 
   "claimAdmin.title": "Claim admin access",
   "claimAdmin.description": "Enter the admin claim passcode to become the first administrator.",
