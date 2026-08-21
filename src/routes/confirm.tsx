@@ -1,13 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { Check } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { StepScreen } from "@/components/StepScreen";
 import { t as staticT, useTranslation } from "@/i18n";
 import type { Category } from "@/lib/categories";
 import { constraintCategories, wellbeingCategories } from "@/lib/categories";
+import { extractConcerns } from "@/lib/extract-concerns.functions";
 import { useFlow } from "@/lib/flow-store";
 import { cn } from "@/lib/utils";
-import { logButton, logState } from "@/lib/session-logger";
+import { logAI, logButton, logState } from "@/lib/session-logger";
 
 export const Route = createFileRoute("/confirm")({
   head: () => ({
