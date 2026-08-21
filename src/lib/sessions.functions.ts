@@ -118,8 +118,8 @@ export const logEvent = createServerFn({ method: "POST" })
 
     const update: SessionUpdate = {
       updated_at: ts,
-      transcript: [...(row.transcript as unknown[]), transcriptEntry] as SessionUpdate["transcript"],
-      events: [...(row.events as unknown[]), eventEntry] as SessionUpdate["events"],
+      transcript: [...(row.transcript as unknown[]), transcriptEntry] as unknown as NonNullable<SessionUpdate["transcript"]>,
+      events: [...(row.events as unknown[]), eventEntry] as unknown as NonNullable<SessionUpdate["events"]>,
     };
 
     if (data.patch && typeof data.patch === "object") {
