@@ -52,7 +52,7 @@ Over the cap, the function throws a rate-limit error. The client logger already 
 
 Admin is granted only when no admin row exists **and** the secret matches exactly. Any failure throws the same Forbidden error, with no distinction between "wrong secret" and "already claimed". Once an admin exists the path is permanently inert.
 
-The claim UI is not on the public `/auth` page. It lives on a small authenticated page (`/_authenticated/claim-admin`), reachable only when signed in, that renders the passcode field only while the caller has no admin role; otherwise it just says the claim window is closed.
+The claim UI is not on the public `/auth` page. It lives on a small authenticated page (`/_authenticated/claim-admin`). A new `adminClaimed(): boolean` server function checks via the admin client whether any `user_roles` row with `role = 'admin'` exists, returning only that boolean — no identity or role details leak. The page renders the passcode field only when `adminClaimed()` is false; otherwise it shows the "claim window is closed" message for every visitor.
 
 ## After you have your account
 
