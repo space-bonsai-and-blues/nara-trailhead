@@ -87,7 +87,7 @@ function AuthPage() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 placeholder={t("auth.passwordPlaceholder")}
-                required={mode !== "forgot"}
+                required
               />
             </div>
           )}
