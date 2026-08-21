@@ -102,7 +102,7 @@ export function StepScreen({
               <button
                 type="button"
                 onClick={() => {
-                  logButton(step.id, "back");
+                  logButton(step.path, "back");
                   onBack();
                 }}
                 className={secondaryClass}
@@ -112,7 +112,7 @@ export function StepScreen({
             ) : previous ? (
               <Link
                 to={previous.path}
-                onClick={() => logButton(step.id, "back")}
+                onClick={() => logButton(step.path, "back")}
                 className={secondaryClass}
               >
                 {t("common.back")}
@@ -123,7 +123,7 @@ export function StepScreen({
               <button
                 type="button"
                 onClick={() => {
-                  logButton(step.id, continueLabel ?? "continue");
+                  logButton(step.path, continueLabel ?? "continue");
                   onContinue();
                 }}
                 disabled={continueDisabled}
@@ -136,7 +136,7 @@ export function StepScreen({
                 to={next.path}
                 aria-disabled={continueDisabled}
                 onClick={() => {
-                  logButton(step.id, continueLabel ?? "continue");
+                  logButton(step.path, continueLabel ?? "continue");
                   onBeforeContinue?.();
                 }}
                 className={primaryClass}
@@ -147,7 +147,7 @@ export function StepScreen({
               <Link
                 to="/"
                 onClick={() => {
-                  logButton(step.id, "start_over");
+                  logButton(step.path, "start_over");
                   onStartOver?.();
                 }}
                 className="inline-flex h-12 flex-[2] items-center justify-center rounded-full bg-primary text-sm font-medium text-primary-foreground transition-opacity hover:opacity-90"
