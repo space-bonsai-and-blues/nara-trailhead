@@ -23,6 +23,15 @@ export const Route = createFileRoute("/")({
 function InputScreen() {
   const { t } = useTranslation();
   const { decision, optionA, optionB, setDecision, setOptionA, setOptionB } = useFlow();
+  const loggedRef = useRef(false);
+
+  useEffect(() => {
+    void ensureSession();
+    if (!loggedRef.current) {
+      loggedRef.current = true;
+      logState("input", { screen: "input", event: "screen_view" });
+    }
+  }, []);
 
   const missingDecision = !decision.trim();
   const missingOptionA = !optionA.trim();
@@ -54,6 +63,7 @@ function InputScreen() {
             id="decision"
             value={decision}
             onChange={(e) => setDecision(e.target.value)}
+            onBlur={() => logText("input", "decision", decision)}
             placeholder={t("input.decisionPlaceholder")}
             className="min-h-[120px] resize-none"
           />
@@ -66,6 +76,7 @@ function InputScreen() {
             id="option-a"
             value={optionA}
             onChange={(e) => setOptionA(e.target.value)}
+            onBlur={() => logText("input", "optionA", optionA)}
             placeholder={t("input.optionAPlaceholder")}
           />
           {missingOptions ? requiredNote : null}
@@ -77,6 +88,7 @@ function InputScreen() {
             id="option-b"
             value={optionB}
             onChange={(e) => setOptionB(e.target.value)}
+            onBlur={() => logText("input", "optionB", optionB)}
             placeholder={t("input.optionBPlaceholder")}
           />
           {optionalNote}
