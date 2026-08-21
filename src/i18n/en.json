@@ -1,5 +1,7 @@
 {
   "app.name": "Trailhead",
+  "header.signIn": "Sign in",
+  "header.account": "Account",
   "common.continue": "Continue",
   "common.back": "Back",
   "common.loading": "Loading...",
