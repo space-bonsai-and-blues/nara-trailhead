@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      rate_limits: {
+        Row: {
+          call_count: number
+          client_id: string
+          window_start: string
+        }
+        Insert: {
+          call_count?: number
+          client_id: string
+          window_start?: string
+        }
+        Update: {
+          call_count?: number
+          client_id?: string
+          window_start?: string
+        }
+        Relationships: []
+      }
       sessions: {
         Row: {
           abandoned_at: string | null
