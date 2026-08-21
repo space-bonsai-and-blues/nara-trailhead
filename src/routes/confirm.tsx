@@ -26,9 +26,18 @@ export const Route = createFileRoute("/confirm")({
 
 function ConfirmScreen() {
   const { t } = useTranslation();
-  const { setRelevantCategories } = useFlow();
+  const { decision, setRelevantCategories } = useFlow();
   const [selected, setSelected] = useState<Set<string>>(new Set());
   const loggedRef = useRef(false);
+  const aiLoggedRef = useRef(false);
+
+  const classify = useServerFn(extractConcerns);
+  const { data: classifyResult } = useQuery({
+    queryKey: ["extract-concerns", decision],
+    queryFn: () => classify({ data: { userMessage: decision } }),
+    enabled: decision.trim().length > 0,
+    staleTime: Infinity,
+  });
 
   useEffect(() => {
     if (!loggedRef.current) {
@@ -36,6 +45,16 @@ function ConfirmScreen() {
       logState("confirm", { screen: "confirm", event: "screen_view" });
     }
   }, []);
+
+  useEffect(() => {
+    if (classifyResult && !aiLoggedRef.current) {
+      aiLoggedRef.current = true;
+      logAI("confirm", {
+        source: classifyResult.source,
+        categories: classifyResult.categories,
+      });
+    }
+  }, [classifyResult]);
 
   const toggle = (id: string) => {
     setSelected((prev) => {
