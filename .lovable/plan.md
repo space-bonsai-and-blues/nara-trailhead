@@ -32,6 +32,29 @@ Access: service_role only. RLS on, with a deny-all policy for anon/authenticated
 - All new user-facing copy goes into `src/i18n/en.json` (dashboard/admin copy stays English-only).
 - Frontend changes only reach the public URL after publishing.
 
+## Forget me
+
+A persistent footer on every screen (added to the shared shell, alongside the existing header) reads: "Trailhead keeps a private record of this session to help improve the app. Forget me" — with "Forget me" as an inline link.
+
+Tapping it calls a new unauthenticated `forgetMe(clientId)` server function that deletes every `sessions` row for that client ID via the admin client (imported inside the handler). The client ID from localStorage is the only credential — same trust model as the access token on the other write functions. It always reports success whether or not rows matched, so nothing leaks about whether that ID had recorded sessions.
+
+The browser then clears `trailhead_client_id` from localStorage and the session id/access token from sessionStorage, and mints a fresh client ID immediately, so the app keeps working — the participant simply continues under a new, unlinked anonymous identity. A brief toast confirms it; no reload. All copy goes into `src/i18n/en.json`.
+
+## Rate limiting
+
+`startSession`, `logEvent`, and `finalizeSession` each cap a client ID at 60 calls per rolling 5-minute window. The count is derived from the existing `sessions` table: rows created and timestamped entries already appended to `events` for that client ID inside the window are summed before the write happens. No new table unless that read turns out to be awkward in practice, in which case a small dedicated counter table is added instead.
+
+Over the cap, the function throws a rate-limit error. The client logger already swallows errors silently, so a real participant never sees anything; a script hammering the endpoint just stops being recorded.
+
+## Shared-secret admin claim
+
+`claimFirstAdmin(secret)` requires a passcode in addition to the no-admin-exists check. The real value lives as a Lovable Cloud secret, `ADMIN_CLAIM_SECRET` — I'll open a secure form for you to set it, since you need to know the value to type it in. It is never hardcoded and never sent to the browser; only the typed attempt travels to the server.
+
+Admin is granted only when no admin row exists **and** the secret matches exactly. Any failure throws the same Forbidden error, with no distinction between "wrong secret" and "already claimed". Once an admin exists the path is permanently inert.
+
+The claim UI is not on the public `/auth` page. It lives on a small authenticated page (`/_authenticated/claim-admin`), reachable only when signed in, that renders the passcode field only while the caller has no admin role; otherwise it just says the claim window is closed.
+
 ## After you have your account
 
-Sign up once, claim admin, then tell me and I'll close sign-up so the dashboard can't be claimed or crowded by a stranger.
+Sign up once, claim admin with the passcode, then tell me and I'll close sign-up so the dashboard can't be claimed or crowded by a stranger.
+
