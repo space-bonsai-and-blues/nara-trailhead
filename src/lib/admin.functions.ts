@@ -15,7 +15,7 @@ export const claimFirstAdmin = createServerFn({ method: "POST" })
     const expected = process.env["ADMIN_CLAIM_SECRET"];
     if (!expected) {
       console.error("ADMIN_CLAIM_SECRET is not configured");
-      throw new Error("Forbidden");
+      return { ok: false as const, reason: "not_configured" as const };
     }
 
     const { count: adminCount, error: countError } = await supabaseAdmin
@@ -25,11 +25,15 @@ export const claimFirstAdmin = createServerFn({ method: "POST" })
 
     if (countError) {
       console.error("claimFirstAdmin count error:", countError);
-      throw new Error("Forbidden");
+      return { ok: false as const, reason: "error" as const };
     }
 
-    if (adminCount !== 0 || data.secret !== expected) {
-      throw new Error("Forbidden");
+    if (adminCount !== 0) {
+      return { ok: false as const, reason: "already_claimed" as const };
+    }
+
+    if (data.secret !== expected) {
+      return { ok: false as const, reason: "invalid_secret" as const };
     }
 
     const { error } = await supabaseAdmin.from("user_roles").insert({
@@ -39,11 +43,12 @@ export const claimFirstAdmin = createServerFn({ method: "POST" })
 
     if (error) {
       console.error("claimFirstAdmin insert error:", error);
-      throw new Error("Forbidden");
+      return { ok: false as const, reason: "error" as const };
     }
 
-    return { ok: true };
+    return { ok: true as const };
   });
+
 
 export const adminClaimed = createServerFn({ method: "GET" }).handler(async () => {
   const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
