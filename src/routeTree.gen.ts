@@ -18,6 +18,7 @@ import { Route as RatingRouteImport } from './routes/rating'
 import { Route as ReportRouteImport } from './routes/report'
 import { Route as ResetPasswordRouteImport } from './routes/reset-password'
 import { Route as WeightingRouteImport } from './routes/weighting'
+import { Route as AuthenticatedAdminDashboardRouteImport } from './routes/_authenticated/admin-dashboard'
 import { Route as AuthenticatedClaimAdminRouteImport } from './routes/_authenticated/claim-admin'
 
 const IndexRoute = IndexRouteImport.update({
@@ -64,6 +65,12 @@ const WeightingRoute = WeightingRouteImport.update({
   path: '/weighting',
   getParentRoute: () => rootRouteImport,
 } as any)
+const AuthenticatedAdminDashboardRoute =
+  AuthenticatedAdminDashboardRouteImport.update({
+    id: '/admin-dashboard',
+    path: '/admin-dashboard',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedClaimAdminRoute = AuthenticatedClaimAdminRouteImport.update({
   id: '/claim-admin',
   path: '/claim-admin',
@@ -79,6 +86,7 @@ export interface FileRoutesByFullPath {
   '/report': typeof ReportRoute
   '/reset-password': typeof ResetPasswordRoute
   '/weighting': typeof WeightingRoute
+  '/admin-dashboard': typeof AuthenticatedAdminDashboardRoute
   '/claim-admin': typeof AuthenticatedClaimAdminRoute
 }
 export interface FileRoutesByTo {
@@ -90,6 +98,7 @@ export interface FileRoutesByTo {
   '/report': typeof ReportRoute
   '/reset-password': typeof ResetPasswordRoute
   '/weighting': typeof WeightingRoute
+  '/admin-dashboard': typeof AuthenticatedAdminDashboardRoute
   '/claim-admin': typeof AuthenticatedClaimAdminRoute
 }
 export interface FileRoutesById {
@@ -103,6 +112,7 @@ export interface FileRoutesById {
   '/report': typeof ReportRoute
   '/reset-password': typeof ResetPasswordRoute
   '/weighting': typeof WeightingRoute
+  '/_authenticated/admin-dashboard': typeof AuthenticatedAdminDashboardRoute
   '/_authenticated/claim-admin': typeof AuthenticatedClaimAdminRoute
 }
 export interface FileRouteTypes {
@@ -116,6 +126,7 @@ export interface FileRouteTypes {
     | '/report'
     | '/reset-password'
     | '/weighting'
+    | '/admin-dashboard'
     | '/claim-admin'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -127,6 +138,7 @@ export interface FileRouteTypes {
     | '/report'
     | '/reset-password'
     | '/weighting'
+    | '/admin-dashboard'
     | '/claim-admin'
   id:
     | '__root__'
@@ -139,6 +151,7 @@ export interface FileRouteTypes {
     | '/report'
     | '/reset-password'
     | '/weighting'
+    | '/_authenticated/admin-dashboard'
     | '/_authenticated/claim-admin'
   fileRoutesById: FileRoutesById
 }
@@ -219,6 +232,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WeightingRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/_authenticated/admin-dashboard': {
+      id: '/_authenticated/admin-dashboard'
+      path: '/admin-dashboard'
+      fullPath: '/admin-dashboard'
+      preLoaderRoute: typeof AuthenticatedAdminDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/claim-admin': {
       id: '/_authenticated/claim-admin'
       path: '/claim-admin'
@@ -230,10 +250,12 @@ declare module '@tanstack/react-router' {
 }
 
 interface AuthenticatedRouteRouteChildren {
+  AuthenticatedAdminDashboardRoute: typeof AuthenticatedAdminDashboardRoute
   AuthenticatedClaimAdminRoute: typeof AuthenticatedClaimAdminRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
+  AuthenticatedAdminDashboardRoute: AuthenticatedAdminDashboardRoute,
   AuthenticatedClaimAdminRoute: AuthenticatedClaimAdminRoute,
 }
 
