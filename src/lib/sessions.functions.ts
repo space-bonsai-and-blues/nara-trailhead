@@ -1,5 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
+import { requireSupabaseAuth } from "@/integrations/supabase/auth-middleware";
 
 const RATE_LIMIT_WINDOW_MS = 5 * 60 * 1000; // 5 minutes
 const RATE_LIMIT_MAX_CALLS = 60;
@@ -112,7 +113,14 @@ export const logEvent = createServerFn({ method: "POST" })
     const transcriptEntry = { ts, ...data.event };
     const eventEntry = { ts, type: data.event.type };
 
-    const update: Record<string, unknown> = {
+    type SessionUpdate = {
+      updated_at: string;
+      transcript: unknown[];
+      events: unknown[];
+      [key: string]: unknown;
+    };
+
+    const update: SessionUpdate = {
       updated_at: ts,
       transcript: [...(row.transcript as unknown[]), transcriptEntry],
       events: [...(row.events as unknown[]), eventEntry],
@@ -164,13 +172,19 @@ export const finalizeSession = createServerFn({ method: "POST" })
       throw new Error("Invalid session or access token");
     }
 
-    const update: Record<string, unknown> = {
+    type SessionUpdate = {
+      updated_at: string;
+      completed: boolean;
+      [key: string]: unknown;
+    };
+
+    const update: SessionUpdate = {
       updated_at: new Date().toISOString(),
       completed: data.completed ?? true,
     };
 
-    if (data.abandonedAt !== undefined) update.abandoned_at = data.abandonedAt;
-    if (data.reflection !== undefined) update.reflection = data.reflection;
+    if (data.abandonedAt !== undefined) update["abandoned_at"] = data.abandonedAt;
+    if (data.reflection !== undefined) update["reflection"] = data.reflection;
 
     if (data.patch && typeof data.patch === "object") {
       for (const [key, value] of Object.entries(data.patch)) {
