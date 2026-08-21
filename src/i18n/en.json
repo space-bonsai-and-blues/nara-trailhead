@@ -2,6 +2,7 @@
   "app.name": "Trailhead",
   "common.continue": "Continue",
   "common.back": "Back",
+  "common.loading": "Loading...",
   "common.startOver": "Start over",
   "common.stepProgress": "Step {current} of {total}",
   "common.acknowledged": "{current} of {total} acknowledged",
