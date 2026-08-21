@@ -17,6 +17,7 @@ function AdminDashboardPage() {
   const { data, isLoading, error } = useQuery({
     queryKey: ["admin-sessions"],
     queryFn: () => fetchSessions(),
+    retry: false,
   });
 
   async function signOut() {
@@ -40,7 +41,16 @@ function AdminDashboardPage() {
         {isLoading && <p className="text-muted-foreground">{t("common.loading")}</p>}
         {error && <p className="text-destructive">{error.message}</p>}
 
-        {!isLoading && !error && (
+        {!isLoading && !error && data?.forbidden && (
+          <div className="rounded-lg border border-border bg-muted/40 p-4 text-sm">
+            <p className="mb-3 text-muted-foreground">
+              You are signed in, but this account does not have admin access yet.
+            </p>
+            <Button onClick={() => void navigate({ to: "/claim-admin" })}>Claim admin access</Button>
+          </div>
+        )}
+
+        {!isLoading && !error && !data?.forbidden && (
           <>
             <p className="text-sm text-muted-foreground">
               {t("adminDashboard.sessionCount", { count: data?.sessions.length ?? 0 })}
