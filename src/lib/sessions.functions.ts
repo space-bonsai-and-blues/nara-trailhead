@@ -226,7 +226,7 @@ export const listSessions = createServerFn({ method: "GET" })
       .maybeSingle();
 
     if (roleError || !roleRow) {
-      throw new Error("Forbidden");
+      return { forbidden: true as const, sessions: [] };
     }
 
     const { data: rows, error } = await supabaseAdmin
