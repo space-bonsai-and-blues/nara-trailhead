@@ -49,7 +49,7 @@ function setSessionCredentials(creds: SessionCredentials | null): void {
   }
 }
 
-let startPromise: Promise<SessionCredentials> | null = null;
+let startPromise: Promise<SessionCredentials | null> | null = null;
 
 export async function ensureSession(): Promise<SessionCredentials | null> {
   if (typeof window === "undefined") return null;
